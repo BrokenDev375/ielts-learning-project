@@ -1,8 +1,8 @@
 # IELTS Study — hệ thống lớp học và ôn luyện IELTS
 
-Dự án bài tập lớn **Lập trình mạng**, phát triển riêng trong thư mục này. Phiên bản hiện tại triển khai **module 1: tài khoản và lớp học**; các kỹ năng/bài nộp, AI, hồ sơ trình độ, bổ trợ và gamification nằm trong kế hoạch phát triển tiếp.
+Dự án bài tập lớn **Lập trình mạng**, phát triển riêng trong thư mục này. Nhánh **feature/writing**, tạo trực tiếp từ main, có **module 1: tài khoản/lớp học** và **module 2: soạn, xuất bản, giao học liệu Writing**. Phần làm/nộp bài, AI, hồ sơ trình độ và gamification là bước tiếp theo.
 
-Bản ORM mới khởi tạo ngày 13/10/2026: Spring Data JPA/Hibernate, Hibernate ddl-auto=validate, open-in-view=false. Docker project ielts-learning-orm và database/volume riêng. Module 1 được commit trước trên main; Speaking tiếp tục trên feature/speaking. Thay đổi stack tiếp theo phải thống nhất với người phụ trách trước khi triển khai.
+Bản ORM mới khởi tạo ngày 13/10/2026: Spring Data JPA/Hibernate, Hibernate ddl-auto=validate, open-in-view=false. Docker project ielts-learning-orm và database/volume riêng. Module 1 ở main; Speaking và Writing phát triển riêng trên feature/speaking và feature/writing, chưa hợp nhất giao diện. Thay đổi stack tiếp theo phải thống nhất với người phụ trách trước khi triển khai.
 
 ## Chức năng hiện có
 
@@ -15,6 +15,14 @@ Bản ORM mới khởi tạo ngày 13/10/2026: Spring Data JPA/Hibernate, Hibern
 - Yêu cầu tạo lớp cùng requestId/nội dung được trả lại lớp cũ; tham gia/xóa/rời lớp không ghi trùng.
 - MySQL lưu tài khoản/lớp/thành viên qua những lần chạy; Flyway quản lý schema.
 - Giao diện responsive cho giảng viên/học viên, thông báo lỗi và giữ nội dung biểu mẫu khi yêu cầu chưa thành công.
+
+## Writing hiện có
+
+- Soạn Task 1 Academic/Task 2, tải hình PNG/JPEG có phân quyền, lưu nháp/xem trước/xuất bản và lịch sử phiên bản.
+- Năm nhãn bổ trợ: chọn overview, ngôn ngữ mô tả, từ vựng chủ đề, liên kết ý, sửa ngữ pháp; có bước hướng dẫn và vận dụng.
+- Giao cho cả lớp tại thời điểm giao hoặc từng học viên; người học nhận đúng phiên bản, không nhận bài mẫu/ghi chú riêng.
+- Bảy bản nháp demo tự biên soạn; giảng viên kiểm tra trước khi phát, chưa có band đã được kiểm chứng.
+- [Payload, seed, nguồn và cách demo](docs/WRITING_MODULE_2.md).
 
 ## Chạy nhanh bằng Docker trên Windows
 
@@ -48,7 +56,7 @@ Linux/macOS: sh scripts/start.sh. Script này dùng .env.example nếu .env chư
     docker compose logs --tail=100 server
     docker compose logs --tail=100 mysql
 
-MySQL dùng named volume mysql_data. Dừng/recreate container bằng các lệnh trên giữ dữ liệu. Đăng nhập lại nếu session đã hết hạn hoặc backend được khởi động lại.
+MySQL dùng named volume mysql_data; hình dùng asset_data. Dừng/recreate container bằng các lệnh trên giữ dữ liệu. Đăng nhập lại nếu session đã hết hạn hoặc backend được khởi động lại.
 
 ### Cổng và kết nối
 
@@ -80,7 +88,7 @@ Nếu đang chạy trọn bộ bằng Docker, dừng server/client trước khi 
        $env:DEMO_STUDENT_PASSWORD = "Student@12345"
        .\mvnw.cmd spring-boot:run
 
-   DB_URL mặc định dùng 127.0.0.1:3306/ielts_learning. Nếu đổi tên database/cổng, đặt DB_URL tương ứng. Email demo cũng cấu hình được qua DEMO_TEACHER_EMAIL/DEMO_STUDENT_EMAIL.
+   DB_URL mặc định dùng 127.0.0.1:3306/ielts_learning_orm. Nếu đổi tên database/cổng, đặt DB_URL tương ứng. Email demo cũng cấu hình được qua DEMO_TEACHER_EMAIL/DEMO_STUDENT_EMAIL.
 
 3. Terminal frontend:
 
@@ -92,7 +100,7 @@ Frontend Vite proxy /api sang 127.0.0.1:8080. Có thể đổi API_PROXY_TARGET 
 
 ## Database
 
-Schema tại source/server/src/main/resources/db/migration/V1__accounts_and_classrooms.sql. Flyway chạy khi server khởi động, không cần tự nhập SQL để bắt đầu.
+Schema tại source/server/src/main/resources/db/migration: V1 tài khoản/lớp và V2 tài nguyên/giao bài (13 bảng mới). V2 giống nhánh Speaking, giữ nguyên khi hợp nhất; V3–V6 chưa triển khai. Flyway chạy khi server khởi động, không cần tự nhập SQL.
 
 | Bảng | Vai trò |
 |---|---|
@@ -100,6 +108,8 @@ Schema tại source/server/src/main/resources/db/migration/V1__accounts_and_clas
 | classrooms | Chủ sở hữu, tên/mô tả, mã tham gia duy nhất, requestId chống tạo trùng |
 | class_members | Quan hệ nhiều lớp–nhiều học viên; khóa chính kép chống tham gia trùng |
 | flyway_schema_history | Lịch sử migration do Flyway quản lý |
+
+V2 có assets, labels, resources/resource_versions, liên kết hình/nhãn, assignments/assignment_recipients và các bảng chuẩn bị trắc nghiệm/nghe. Writing dùng content_json/teaching_json; hình liên kết qua resource_assets.role=VISUAL. Chi tiết tại DATABASE_DESIGN.md.
 
 Session hiện lưu trong bộ nhớ backend. Dữ liệu nghiệp vụ nằm trong MySQL, session hết hiệu lực khi backend restart.
 
@@ -146,7 +156,7 @@ E2E cần bản ứng dụng đang chạy tại http://127.0.0.1:5173, có tài 
 
 Bộ test API kiểm tra đăng nhập/đăng ký, BCrypt, CSRF, giả vai trò, truy cập lớp của người khác, nhiều lớp, chỉnh sửa/xóa/rời lớp, request trùng và 4 request đồng thời. Browser test dùng hai browser context độc lập cho giảng viên/học viên.
 
-Kết quả thực tế và trạng thái kiểm tra nằm ở statics/results/module-1-validation.md. Test chức năng chưa thay cho benchmark hiệu năng hoặc đánh giá hiệu quả học tập.
+Nhánh Writing có 23 API test (12 module 1 + 11 Writing) và 7 browser test (3 module 1 + 4 Writing). [Kết quả Writing](statics/results/module-2-writing-validation.md); kết quả module 1 giữ riêng. Test chức năng chưa thay cho benchmark hiệu năng hoặc đánh giá hiệu quả học tập.
 
 ## Cấu trúc source
 
@@ -174,7 +184,7 @@ Cấu trúc package và trách nhiệm từng tầng: [BACKEND_STRUCTURE.md](doc
 
 ## Giới hạn và phần phát triển tiếp
 
-- Hiện có tài khoản/lớp học; chưa triển khai giao bài/bài nộp, AI, profile IELTS, ôn bổ trợ hoặc XP.
+- Hiện có tài khoản/lớp, học liệu/giao bài Writing và các bước bổ trợ được soạn sẵn; chưa có nhập/lưu nháp/nộp bài của học viên, AI, profile IELTS, đề xuất bổ trợ tự động hoặc XP.
 - Session ở RAM của một backend; chưa có nhiều backend, quên mật khẩu, xác minh email hoặc hệ thống cấp tài khoản giảng viên thực tế.
 - Danh sách hiện phù hợp prototype nhỏ, chưa có phân trang/rate limiting hoặc benchmark tải.
 - Các cơ chế quyền, idempotency và Docker là phần nền tảng kỹ thuật. Không tự gọi chúng là novelty đã được chứng minh.
