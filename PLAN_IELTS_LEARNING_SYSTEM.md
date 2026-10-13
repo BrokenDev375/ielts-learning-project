@@ -1,6 +1,6 @@
 # Kế hoạch kiến trúc và các module: hệ thống hỗ trợ ôn luyện IELTS bằng AI
 
-Ngày lập: **08/10/2026**. Trạng thái: **đã khởi tạo dự án và triển khai module 1 Tài khoản và lớp học (M01/M02); các module còn lại là kế hoạch thiết kế**.
+Ngày lập: **08/10/2026**. Trạng thái: **module 1 Tài khoản/lớp học (M01/M02) đã có; feature/writing có phần module 2 Soạn/xuất bản/giao học liệu Writing (M03); làm/nộp bài và đánh giá vẫn là kế hoạch**.
 
 Cập nhật **09/10/2026**: profile chung, XP/cấp độ/huy hiệu/chuỗi ngày và Reading đã được bổ sung ở lần trước. Lần này cập nhật Listening: bốn nhãn mục tiêu, kiểm tra khó khăn sau test, nhóm luyện nghe–chép lời, hai loại video YouTube, transcript riêng và tiến trình theo từng đoạn; thêm bảng nguồn học liệu cho Reading/Listening và cách chuẩn bị seed.
 
@@ -16,13 +16,15 @@ Cập nhật **12/10/2026**: câu hỏi bài chính/test Reading và Listening t
 
 Bổ sung cùng ngày: phân biệt mô hình database với JSON API tại 5.1, kế hoạch thiết kế database tiếp theo tại 5.2 và hợp đồng dữ liệu/API chung Reading–Listening tại 6.4. Đây là đặc tả cho các module tiếp theo, chưa phải endpoint hoặc schema mới đã triển khai.
 
-Cập nhật thiết kế database **12/10/2026**: đã có [DATABASE_DESIGN.md](DATABASE_DESIGN.md), ERD, từ điển cột/khóa và SQL tham chiếu cho 44 bảng chia theo giai đoạn. Schema đã chạy trên MySQL 8.4.9 và qua 39 kiểm tra dữ liệu/ràng buộc ở database thử riêng. Database ứng dụng hiện vẫn là V1; các nhóm mới được triển khai bằng migration sau V1. Chi tiết tại mục 5.3.
+Cập nhật thiết kế database **12/10/2026**: đã có [DATABASE_DESIGN.md](DATABASE_DESIGN.md), ERD, từ điển cột/khóa và SQL tham chiếu cho 44 bảng chia theo giai đoạn. Schema đã chạy trên MySQL 8.4.9 và qua 39 kiểm tra dữ liệu/ràng buộc ở database thử riêng. Ở lần thiết kế 12/10, database ứng dụng là V1. Nhánh Writing ngày 13/10 đã có thêm V2 tài nguyên/giao bài; V3–V6 là kế hoạch. Chi tiết tại mục 5.3.
 
 Tên đề tài dự kiến: **Xây dựng hệ thống AI hỗ trợ đánh giá, xây dựng hồ sơ người học và phân phối bài luyện IELTS theo điểm yếu từng kỹ năng.**
 
 Tài liệu này là kế hoạch cho hướng ứng dụng mới. Những phần cần giảng viên xác nhận được ghi ở mục 12. Các con số về dữ liệu thử nghiệm là mục tiêu chuẩn bị, không phải kết quả đã đo.
 
 Cập nhật bản ORM 13/10/2026: thư mục ielts-learning-orm, lịch sử Git mới, module 1 dùng Spring Data JPA/Hibernate. Flyway quản lí schema, Hibernate validate mapping, open-in-view=false. Các kỹ năng triển khai trên nhánh riêng; stack được chốt trước khi thay đổi.
+
+Cập nhật Writing 13/10/2026: feature/writing bắt đầu từ main, có Task 1 Academic/Task 2, năm nhãn đã chốt, bước hướng dẫn/vận dụng, bảng từ, hình bảo vệ, nháp/preview/publish/version và giao cho lớp/nhóm học viên. V2 giữ nguyên với Speaking; bảy seed tự biên soạn để DRAFT, sửa ngữ pháp cần giảng viên xác nhận. Các đoạn nguồn trước đây ghi chưa tạo seed mô tả lần lập plan 11/10: hiện có seed demo tự biên soạn, chưa nhập toàn bộ PDF hoặc gán band kiểm chứng. Phần M09 viết/nộp bài hoàn chỉnh, AI/rubric, màn hình chấm và profile chưa triển khai. [Payload, nguồn, demo](docs/WRITING_MODULE_2.md); [kết quả kiểm thử](statics/results/module-2-writing-validation.md).
 
 ## 1. Mục tiêu và phạm vi
 
@@ -1112,7 +1114,7 @@ Ví dụ: database có thể lưu câu hỏi và lựa chọn trong hai bảng Q
 3. Database module 1 đã có users, classrooms, class_members trong V1__accounts_and_classrooms.sql. Khi triển khai tiếp, giữ migration V1 đã áp dụng; thêm migration V2 trở đi theo phạm vi module. Ưu tiên ngân hàng tài liệu/giao bài trước, sau đó lần làm/nháp/bài nộp và phần kỹ năng.
 4. Sau khi thống nhất schema/API, chuẩn bị seed đúng định dạng, triển khai backend/frontend và kiểm tra tải/giao/lưu/nộp giữa các client.
 
-Thiết kế ở bước 1–2 đã được cụ thể hóa tại mục 5.3. Khi triển khai module tiếp theo, thực hiện migration/backend/frontend/seed theo bước 3–4; database đang chạy hiện vẫn dùng V1.
+Thiết kế ở bước 1–2 đã được cụ thể hóa tại mục 5.3. Khi triển khai module tiếp theo, thực hiện migration/backend/frontend/seed theo bước 3–4; nhánh Writing hiện đã chạy V1/V2; bước kế tiếp thêm migration mới.
 
 ### 5.3. Thiết kế database đã chuẩn bị
 
@@ -1426,7 +1428,7 @@ Các contribution trên còn là đề xuất. Phải phân biệt phần kế t
 - Đối với video người dùng cung cấp, cần lấy mốc mô tả/link PDF trước khi tạo seed. Hỗ trợ chia/ghép từ tài liệu có sẵn để giảm nhập tay, giảng viên duyệt ranh giới và lời thoại. Bảng nguồn M06.8/M07.7 là đầu mối tra cứu.
 - Có test đầu vào bốn kỹ năng, test định kỳ và các loại điểm/phạm vi phù hợp; chuẩn bị dữ liệu profile thiếu một kỹ năng để kiểm tra trạng thái thiếu dữ liệu.
 - Bài viết/bản ghi âm có nhận xét do giảng viên đủ chuyên môn đánh giá.
-- Writing: nguồn/worksheet tại M09.7 và mục 13.7; quy mô demo đề xuất M09.8 gồm một Task 1 biểu đồ số liệu, một Task 2 và năm nhóm hoạt động nhỏ. Bảng từ theo đề và câu lỗi/bản sửa cần giảng viên biên soạn/duyệt; chưa có seed nhập vào ứng dụng. Hai nhóm Task 2 đang đề xuất chưa chốt.
+- Writing: nguồn/worksheet tại M09.7 và mục 13.7; quy mô demo đề xuất M09.8 gồm một Task 1 biểu đồ số liệu, một Task 2 và năm nhóm hoạt động nhỏ. Cập nhật 13/10: đã có bảy seed DRAFT tự biên soạn, chart/CSV và phương án riêng, cần giảng viên duyệt; các worksheet/PDF nguồn chưa nhập và seed chưa có band kiểm chứng. Hai nhóm Task 2 đang đề xuất chưa chốt.
 - Bài tham chiếu IELTS có đề/bài làm/band/nhận xét được lưu đúng phạm vi; giữ một bộ bài mới được giảng viên đánh giá để đối chiếu AI, không dùng lại chính ví dụ đã gửi trong prompt làm phép đo chất lượng.
 - Speaking chuẩn bị hai nhóm bổ trợ và ghi chú giảng viên trên profile. Ngân hàng tham chiếu outline có nhiều câu trả lời hợp lệ, từ khóa/cụm và mẫu thiếu ý kèm nhận xét đã duyệt; mẫu tự biên soạn M08.4 chưa là dữ liệu chuyên môn được duyệt.
 - Bài phát âm có âm mục tiêu, từ/câu, phiên âm/audio mẫu được kiểm tra. Nếu chọn công cụ chấm, chuẩn bị bản thu có nhận xét người chấm để đối chiếu ngưỡng; dùng model có sẵn, không đưa huấn luyện model vào scope.
@@ -1567,7 +1569,7 @@ Hạn trong [Submission.md](docs/course/Submission.md): **23:59 ngày 31/10/2026
         common/
           API.md
 
-Cấu trúc bám mục 12 Instruction.md, dùng sơ đồ Mermaid có thể xuất ảnh khi làm báo cáo. Module 1 đã triển khai; source cho các module 2–9 sẽ bổ sung theo trách nhiệm, chưa tạo giả các chức năng hoặc báo cáo hoàn chỉnh. MySQL là database chính, tài khoản/lớp/thành viên lưu qua JPA/Hibernate và Flyway. Hướng dẫn build/run/test, database setup, các giới hạn và nguồn thư viện nằm ở README dự án.
+Cấu trúc bám mục 12 Instruction.md, dùng sơ đồ Mermaid có thể xuất ảnh khi làm báo cáo. Module 1 và phần module 2 học liệu/giao bài Writing đã triển khai; các phần làm/nộp bài, đánh giá và module sau sẽ bổ sung theo trách nhiệm. MySQL là database chính, tài khoản/lớp/thành viên lưu qua JPA/Hibernate và Flyway. Hướng dẫn build/run/test, database setup, các giới hạn và nguồn thư viện nằm ở README dự án.
 
 ### 11.2. Checklist prototype chạy được
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import vn.edu.ptit.ielts.enums.Role;
 import vn.edu.ptit.ielts.repository.UserRepository;
 
+@org.springframework.core.annotation.Order(10)
 @Component
 @ConditionalOnProperty(name = "app.demo.enabled", havingValue = "true")
 public class DemoInitializer implements ApplicationRunner {

@@ -1,4 +1,4 @@
-# HTTP API và message format — module 1
+# HTTP API và message format — module 1 và module 2 Writing
 
 Base path /api, request/response JSON UTF-8. Các thao tác thành công dùng HTTP 200/201/204; lỗi 400/401/403/404/409/503/500. ID tài nguyên lấy từ response, không tin vai trò hoặc ID người dùng tự khai trong body.
 
@@ -87,3 +87,49 @@ Bản ORM dùng Spring Data JPA/Hibernate. Service tạo lớp khóa hàng tài 
 400: JSON/field/ID/code sai; 401: chưa đăng nhập/sai mật khẩu; 403: CSRF hoặc trái quyền; 404: không có lớp/mã; 409: email/requestId trùng với nội dung không phù hợp; 503: database chưa sẵn sàng.
 
 Không trả SQL, password hoặc stacktrace về client. Backend log phục vụ debug; frontend hiển thị thông báo dễ hiểu và giữ form chưa xác nhận. Connection HTTP/TCP được framework quản lý; đóng tab không xóa thành viên lớp.
+
+## Học liệu và bài giao — V2
+
+Mutation cần giảng viên và CSRF. Nhánh này đăng ký handler WRITING; các kỹ năng chưa có handler trả SKILL_NOT_SUPPORTED.
+
+| Method / path | Request | Response / quyền |
+|---|---|---|
+| GET /resources?skill=WRITING | — | Resource[] thuộc giảng viên, mỗi resource có version mới nhất |
+| POST /resources | ResourceInput | 201 Resource, phiên bản 1 DRAFT |
+| PUT /resources/{id}/draft | ResourceInput | 200 Resource; cập nhật nháp hoặc tạo nháp phiên bản mới từ bản đã xuất bản |
+| GET /resources/{id}/versions | — | Version[] mới đến cũ; chỉ chủ sở hữu |
+| POST /resources/{id}/versions/{versionId}/publish | — | 200 Version sau kiểm tra điều kiện xuất bản |
+| POST /assets/images | multipart file | 201 Asset; PNG/JPEG tối đa 5 MiB, tối đa 12 triệu pixel |
+| POST /assets | multipart file | 201 Asset audio; endpoint chung, Writing không dùng trong giao diện |
+| GET /assets/{id} | tùy chọn Range | 200/206 byte tệp; chủ tệp hoặc người nhận bài đang có quyền |
+| GET /assignments | — | Assignment[] của chủ lớp hoặc người nhận đang thuộc lớp |
+| POST /assignments | Assign | 201 tạo mới; 200 phát lại requestId cùng nội dung |
+| GET /assignments/{id} | — | AssignedDetail đúng phiên bản; teaching chỉ cho giảng viên, questions=[] cho Writing |
+
+Đường dẫn tính từ /api. Asset response: id, originalName, mimeType, sizeBytes, url. MIME kiểm tra từ tệp thực; SVG/tệp hỏng bị từ chối. Không lộ storageKey/đường dẫn trên máy chủ.
+
+Resource/Version/AssignedDetail và payload Writing: [WRITING_MODULE_2.md](../../docs/WRITING_MODULE_2.md), [kiểu dùng chung](../client/src/features/learning/types.ts), [WritingPayloads](../server/src/main/java/vn/edu/ptit/ielts/dto/WritingPayloads.java). Response học viên loại toàn bộ teaching; content.activities[].example là ví dụ được chủ ý cấp trong bước hướng dẫn.
+
+Assign:
+
+    {
+      "requestId": "c47bb745-c617-4d69-a4f0-945b008f0013",
+      "classroomId": 1,
+      "resourceVersionId": 12,
+      "purpose": "PRACTICE",
+      "recipientMode": "CLASS_SNAPSHOT",
+      "studentIds": [],
+      "opensAt": null,
+      "dueAt": null,
+      "allowLate": false,
+      "maxAttempts": 1,
+      "feedbackPolicy": "AFTER_SUBMISSION"
+    }
+
+ID minh họa format. SELECTED cần studentIds thuộc lớp; CLASS_SNAPSHOT chốt thành viên hiện tại, người tham gia sau không tự nhận bài. REMEDIAL dùng purpose=REMEDIAL; MAIN dùng PRACTICE/TEST_INITIAL/TEST_PERIODIC/RECHECK. Thời điểm ISO-8601 UTC, dueAt không trước opensAt.
+
+Server khóa lớp khi giao; requestId duy nhất theo lớp chống ghi trùng. Phát lại cùng payload trả assignment cũ; khác payload trả 409 REQUEST_ID_REUSED. Frontend giữ requestId khi thử lại form chưa đổi nội dung. Nháp tài nguyên/upload chưa có idempotency key; không tự retry mutation khi timeout, ngoài trường hợp CSRF bị chặn trước xử lý.
+
+opensAt được thực thi khi học viên tải bài/hình. dueAt/maxAttempts/allowLate/feedbackPolicy là cấu hình cho module 3; chưa có API bài làm/nộp hoặc mở phản hồi. Rời/xóa khỏi lớp chặn quyền hiện tại, giữ assignment_recipients. Bài đã giao giữ resourceVersionId khi xuất bản phiên bản mới.
+
+Lỗi vẫn dùng ApiError; Writing thêm INVALID_WRITING, INVALID_IMAGE, IMAGE_TOO_LARGE (413). Nginx giới hạn multipart 6 MiB, Spring file 5 MiB. Không cấp hình qua URL static public.
