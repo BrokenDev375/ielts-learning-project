@@ -1,0 +1,620 @@
+[
+  {
+    "key": "MAIN_TASK_1",
+    "resource": {
+      "title": "Writing Task 1: Transport to work",
+      "skill": "WRITING",
+      "resourceKind": "MAIN",
+      "activityType": "WRITING_ESSAY",
+      "topic": "Transport",
+      "levelFramework": "IELTS_PRACTICE",
+      "levelLabel": "",
+      "supportLevel": "INDEPENDENT",
+      "content": {
+        "taskType": "TASK_1",
+        "activity": "MAIN",
+        "prompt": "The chart compares the percentages of commuters using four transport methods in Riverton in 2010 and 2020. Summarise the main features and make relevant comparisons.",
+        "instructions": "Đọc kỹ yêu cầu và ngữ cảnh; trình bày bằng câu/đoạn của bạn.",
+        "minimumWords": 150,
+        "writingSeconds": 1200,
+        "visualAssetId": null,
+        "visualType": "BAR_CHART",
+        "hasTimeDimension": true,
+        "visualUnit": "% of commuters",
+        "visualGroups": [
+          "Bus",
+          "Bicycle",
+          "Car",
+          "Walking"
+        ],
+        "visualPeriods": [
+          "2010",
+          "2020"
+        ],
+        "checklist": [
+          "Nêu overview bao quát",
+          "Chọn xu hướng/so sánh nổi bật",
+          "Dùng số liệu và đơn vị chính xác",
+          "Viết thành các đoạn liên kết"
+        ],
+        "assessmentCriteria": [
+          "Task Achievement",
+          "Coherence and Cohesion",
+          "Lexical Resource",
+          "Grammatical Range and Accuracy"
+        ],
+        "vocabulary": [],
+        "activities": [],
+        "originalSentence": "",
+        "originalMeaning": "",
+        "grammarSourceKind": "DEMO_AUTHORING",
+        "teacherConfirmed": false
+      },
+      "teaching": {
+        "teacherNotes": "Học liệu tự biên soạn cho demo; giảng viên kiểm tra hình, bảng từ và phương án trước khi xuất bản. Chưa có band được giám khảo xác nhận.",
+        "modelResponse": "The bar chart compares the proportions of commuters who travelled by bus, bicycle, car or on foot in Riverton in 2010 and 2020.\n\nOverall, bus travel became the most popular method by the end of the period, while the share of car users fell considerably. Cycling also declined, whereas walking accounted for the same proportion in both years.\n\nIn 2010, cars were used by 40 percent of commuters, making them the leading option. Bicycles were the second most common choice, at 30 percent. Buses carried 20 percent of commuters, while the remaining 10 percent walked to work. Together, car and bicycle users represented a clear majority in that year.\n\nBy 2020, the proportion travelling by bus had risen to 50 percent, an increase of 30 percentage points. In contrast, car use fell to 20 percent, half its earlier figure. Cycling decreased by 10 percentage points to the same level as car travel. Walking remained stable at 10 percent and was still the least common method.",
+        "sampleAnswers": [],
+        "rubricSourceUrl": "https://ielts.org/cdn/ielts-guides/ielts-writing-band-descriptors.pdf"
+      },
+      "source": {
+        "url": "https://ielts.org/take-a-test/test-types/ielts-academic-test/ielts-academic-format-writing",
+        "note": "DEMO_WRITING_V1:MAIN_TASK_1 | Đề/học liệu tự biên soạn; nguồn IELTS chỉ tham khảo dạng nhiệm vụ. Cần giảng viên duyệt."
+      }
+    }
+  },
+  {
+    "key": "MAIN_TASK_2",
+    "resource": {
+      "title": "Writing Task 2: University education",
+      "skill": "WRITING",
+      "resourceKind": "MAIN",
+      "activityType": "WRITING_ESSAY",
+      "topic": "Education",
+      "levelFramework": "IELTS_PRACTICE",
+      "levelLabel": "",
+      "supportLevel": "GUIDED",
+      "content": {
+        "taskType": "TASK_2",
+        "activity": "MAIN",
+        "prompt": "Some people believe universities should focus on practical skills for employment, while others value academic subjects. Discuss both views and explain your own position.",
+        "instructions": "Đọc kỹ yêu cầu và ngữ cảnh; trình bày bằng câu/đoạn của bạn.",
+        "minimumWords": 250,
+        "writingSeconds": 2400,
+        "visualAssetId": null,
+        "visualType": "NONE",
+        "hasTimeDimension": false,
+        "visualUnit": "",
+        "visualGroups": [],
+        "visualPeriods": [],
+        "checklist": [
+          "Trình bày cả hai quan điểm",
+          "Nêu lập trường của mình",
+          "Phát triển ý bằng giải thích/ví dụ",
+          "Viết các đoạn có liên kết"
+        ],
+        "assessmentCriteria": [
+          "Task Response",
+          "Coherence and Cohesion",
+          "Lexical Resource",
+          "Grammatical Range and Accuracy"
+        ],
+        "vocabulary": [
+          {
+            "term": "practical skills",
+            "meaning": "kỹ năng ứng dụng vào công việc hoặc đời sống",
+            "collocation": "develop practical skills",
+            "example": "Students develop practical skills through supervised projects.",
+            "level": ""
+          },
+          {
+            "term": "employment prospects",
+            "meaning": "triển vọng tìm việc làm phù hợp",
+            "collocation": "improve employment prospects",
+            "example": "Relevant experience can improve graduates' employment prospects.",
+            "level": ""
+          },
+          {
+            "term": "critical thinking",
+            "meaning": "khả năng xem xét lập luận và bằng chứng",
+            "collocation": "develop critical thinking",
+            "example": "Academic courses can develop critical thinking through discussion.",
+            "level": ""
+          },
+          {
+            "term": "balanced curriculum",
+            "meaning": "chương trình kết hợp các mục tiêu học phù hợp",
+            "collocation": "offer a balanced curriculum",
+            "example": "A university should offer a balanced curriculum with theory and practice.",
+            "level": ""
+          }
+        ],
+        "activities": [],
+        "originalSentence": "",
+        "originalMeaning": "",
+        "grammarSourceKind": "DEMO_AUTHORING",
+        "teacherConfirmed": false
+      },
+      "teaching": {
+        "teacherNotes": "Học liệu tự biên soạn cho demo; giảng viên kiểm tra hình, bảng từ và phương án trước khi xuất bản. Chưa có band được giám khảo xác nhận.",
+        "modelResponse": "Universities face pressure to help graduates enter employment, but they also have a broader educational role. While practical courses offer clear benefits, I believe the strongest approach combines professional preparation with academic study.\n\nPractical training can make the transition to work easier. Through placements and supervised projects, students learn how to apply knowledge, communicate with colleagues and manage deadlines. For example, an engineering student who has completed a design project may understand both technical requirements and the need to explain decisions to a client. Such experience can improve employment prospects and help employers assess a graduate's abilities. It can also show students which areas they need to develop before seeking a permanent position.\n\nHowever, academic subjects provide foundations that remain useful when particular jobs change. Studying mathematics, history or scientific theory encourages students to examine evidence and question assumptions. These habits are valuable beyond the classroom. A graduate may need to evaluate an unfamiliar problem rather than repeat a routine task learnt during training. Academic study also supports research and allows universities to contribute to knowledge that has no immediate commercial application.\n\nIn my view, practical and academic education should support each other. Universities could retain demanding theoretical courses while connecting them to realistic projects. Partnerships with employers would provide experience, but teachers should ensure that placements meet educational aims. Students should also have opportunities to reflect on what they have learnt instead of treating work experience as a substitute for study.\n\nIn conclusion, universities should prepare students for employment without reducing education to job training. A balanced curriculum gives graduates practical skills as well as the understanding needed to adapt and continue learning throughout their lives.",
+        "sampleAnswers": [],
+        "rubricSourceUrl": "https://ielts.org/cdn/ielts-guides/ielts-writing-band-descriptors.pdf"
+      },
+      "source": {
+        "url": "https://ielts.org/take-a-test/test-types/ielts-academic-test/ielts-academic-format-writing",
+        "note": "DEMO_WRITING_V1:MAIN_TASK_2 | Đề/học liệu tự biên soạn; nguồn IELTS chỉ tham khảo dạng nhiệm vụ. Cần giảng viên duyệt."
+      }
+    }
+  },
+  {
+    "key": "OVERVIEW_SELECTION",
+    "resource": {
+      "title": "Bổ trợ: Chọn thông tin và viết overview",
+      "skill": "WRITING",
+      "resourceKind": "REMEDIAL",
+      "activityType": "GUIDED",
+      "topic": "Transport",
+      "levelFramework": "IELTS_PRACTICE",
+      "levelLabel": "",
+      "supportLevel": "GUIDED",
+      "content": {
+        "taskType": "TASK_1",
+        "activity": "OVERVIEW_SELECTION",
+        "prompt": "Chọn đặc điểm lớn và viết overview cho biểu đồ phương tiện đi làm.",
+        "instructions": "Đọc kỹ yêu cầu và ngữ cảnh; trình bày bằng câu/đoạn của bạn.",
+        "minimumWords": 0,
+        "writingSeconds": 600,
+        "visualAssetId": null,
+        "visualType": "BAR_CHART",
+        "hasTimeDimension": true,
+        "visualUnit": "% of commuters",
+        "visualGroups": [
+          "Bus",
+          "Bicycle",
+          "Car",
+          "Walking"
+        ],
+        "visualPeriods": [
+          "2010",
+          "2020"
+        ],
+        "checklist": [
+          "Làm bước hướng dẫn",
+          "Giải thích lựa chọn/cách sửa",
+          "Tự vận dụng vào tình huống mới"
+        ],
+        "assessmentCriteria": [
+          "Task Achievement",
+          "Coherence and Cohesion",
+          "Lexical Resource",
+          "Grammatical Range and Accuracy"
+        ],
+        "vocabulary": [],
+        "activities": [
+          {
+            "id": "overview_selection-guided",
+            "type": "SELECT_FEATURES",
+            "stage": "GUIDED",
+            "instruction": "Chọn hai hoặc ba đặc điểm lớn để đưa vào overview; giải thích vì sao không cần liệt kê mọi con số.",
+            "context": "Nhìn toàn bộ hình: xe buýt tăng mạnh, ô tô giảm, đi bộ không đổi.",
+            "items": [
+              "Xu hướng của xe buýt",
+              "Sự thay đổi thứ hạng phương tiện",
+              "Nhóm không đổi"
+            ],
+            "example": "Xe buýt tăng từ 20% lên 50%, ô tô giảm từ 40% xuống 20%; đây là xu hướng lớn."
+          },
+          {
+            "id": "overview_selection-transfer",
+            "type": "TRANSFER",
+            "stage": "TRANSFER",
+            "instruction": "Dữ liệu mới: người đi tàu tăng 15% lên 40%, ô tô giảm 60% xuống 35%, xe đạp giữ 25%. Viết overview hai câu.",
+            "context": "",
+            "items": [],
+            "example": ""
+          }
+        ],
+        "originalSentence": "",
+        "originalMeaning": "",
+        "grammarSourceKind": "DEMO_AUTHORING",
+        "teacherConfirmed": false
+      },
+      "teaching": {
+        "teacherNotes": "Học liệu tự biên soạn cho demo; giảng viên kiểm tra hình, bảng từ và phương án trước khi xuất bản. Chưa có band được giám khảo xác nhận.",
+        "modelResponse": "",
+        "sampleAnswers": [
+          {
+            "activityId": "overview_selection-guided",
+            "acceptedExamples": [
+              "Bus travel became the most popular option, while car use declined and walking remained stable."
+            ],
+            "explanation": "Overview cần bao quát đặc điểm lớn. Có thể diễn đạt khác nếu vẫn đúng hình."
+          }
+        ],
+        "rubricSourceUrl": "https://ielts.org/cdn/ielts-guides/ielts-writing-band-descriptors.pdf"
+      },
+      "source": {
+        "url": "https://ielts.org/take-a-test/test-types/ielts-academic-test/ielts-academic-format-writing",
+        "note": "DEMO_WRITING_V1:OVERVIEW_SELECTION | Đề/học liệu tự biên soạn; nguồn IELTS chỉ tham khảo dạng nhiệm vụ. Cần giảng viên duyệt."
+      }
+    }
+  },
+  {
+    "key": "DESCRIPTIVE_LANGUAGE",
+    "resource": {
+      "title": "Bổ trợ: Diễn đạt xu hướng và so sánh",
+      "skill": "WRITING",
+      "resourceKind": "REMEDIAL",
+      "activityType": "GUIDED",
+      "topic": "Transport",
+      "levelFramework": "IELTS_PRACTICE",
+      "levelLabel": "",
+      "supportLevel": "GUIDED",
+      "content": {
+        "taskType": "TASK_1",
+        "activity": "DESCRIPTIVE_LANGUAGE",
+        "prompt": "Mô tả xu hướng và viết lại câu bằng nhiều cấu trúc hợp lệ.",
+        "instructions": "Đọc kỹ yêu cầu và ngữ cảnh; trình bày bằng câu/đoạn của bạn.",
+        "minimumWords": 0,
+        "writingSeconds": 600,
+        "visualAssetId": null,
+        "visualType": "BAR_CHART",
+        "hasTimeDimension": true,
+        "visualUnit": "% of commuters",
+        "visualGroups": [
+          "Bus",
+          "Bicycle",
+          "Car",
+          "Walking"
+        ],
+        "visualPeriods": [
+          "2010",
+          "2020"
+        ],
+        "checklist": [
+          "Làm bước hướng dẫn",
+          "Giải thích lựa chọn/cách sửa",
+          "Tự vận dụng vào tình huống mới"
+        ],
+        "assessmentCriteria": [
+          "Task Achievement",
+          "Coherence and Cohesion",
+          "Lexical Resource",
+          "Grammatical Range and Accuracy"
+        ],
+        "vocabulary": [],
+        "activities": [
+          {
+            "id": "descriptive_language-guided",
+            "type": "PARAPHRASE",
+            "stage": "GUIDED",
+            "instruction": "Viết hai cách mô tả mức tăng của xe buýt, giữ đúng đơn vị và mốc.",
+            "context": "Xe buýt: 20% năm 2010, 50% năm 2020.",
+            "items": [
+              "increase from ... to ...",
+              "There was an increase in ...",
+              "percentage points"
+            ],
+            "example": "Đi từ 20% đến 50% là tăng 30 điểm phần trăm; phân biệt với phần trăm tăng tương đối."
+          },
+          {
+            "id": "descriptive_language-transfer",
+            "type": "TRANSFER",
+            "stage": "TRANSFER",
+            "instruction": "Dữ liệu mới: tỷ lệ dùng tàu là 15% năm 2015 và 35% năm 2025. Viết hai câu khác cấu trúc nhưng cùng nghĩa.",
+            "context": "",
+            "items": [],
+            "example": ""
+          }
+        ],
+        "originalSentence": "",
+        "originalMeaning": "",
+        "grammarSourceKind": "DEMO_AUTHORING",
+        "teacherConfirmed": false
+      },
+      "teaching": {
+        "teacherNotes": "Học liệu tự biên soạn cho demo; giảng viên kiểm tra hình, bảng từ và phương án trước khi xuất bản. Chưa có band được giám khảo xác nhận.",
+        "modelResponse": "",
+        "sampleAnswers": [
+          {
+            "activityId": "descriptive_language-guided",
+            "acceptedExamples": [
+              "The proportion of bus commuters increased from 20% to 50% between 2010 and 2020.",
+              "There was a 30-percentage-point increase in bus use over the period."
+            ],
+            "explanation": "Dùng danh từ increase hoặc động từ increased đều được nếu cấu trúc đúng. Không đánh đồng 30 điểm phần trăm với tăng 30%."
+          }
+        ],
+        "rubricSourceUrl": "https://ielts.org/cdn/ielts-guides/ielts-writing-band-descriptors.pdf"
+      },
+      "source": {
+        "url": "https://ielts.org/take-a-test/test-types/ielts-academic-test/ielts-academic-format-writing",
+        "note": "DEMO_WRITING_V1:DESCRIPTIVE_LANGUAGE | Đề/học liệu tự biên soạn; nguồn IELTS chỉ tham khảo dạng nhiệm vụ. Cần giảng viên duyệt."
+      }
+    }
+  },
+  {
+    "key": "TOPIC_VOCABULARY",
+    "resource": {
+      "title": "Bổ trợ: Từ vựng chủ đề giáo dục",
+      "skill": "WRITING",
+      "resourceKind": "REMEDIAL",
+      "activityType": "GUIDED",
+      "topic": "Education",
+      "levelFramework": "IELTS_PRACTICE",
+      "levelLabel": "",
+      "supportLevel": "GUIDED",
+      "content": {
+        "taskType": "TASK_2",
+        "activity": "TOPIC_VOCABULARY",
+        "prompt": "Luyện từ/cụm về giáo dục để diễn đạt ý trước khi viết bài hoàn chỉnh.",
+        "instructions": "Đọc kỹ yêu cầu và ngữ cảnh; trình bày bằng câu/đoạn của bạn.",
+        "minimumWords": 0,
+        "writingSeconds": 600,
+        "visualAssetId": null,
+        "visualType": "NONE",
+        "hasTimeDimension": false,
+        "visualUnit": "",
+        "visualGroups": [],
+        "visualPeriods": [],
+        "checklist": [
+          "Làm bước hướng dẫn",
+          "Giải thích lựa chọn/cách sửa",
+          "Tự vận dụng vào tình huống mới"
+        ],
+        "assessmentCriteria": [
+          "Task Response",
+          "Coherence and Cohesion",
+          "Lexical Resource",
+          "Grammatical Range and Accuracy"
+        ],
+        "vocabulary": [
+          {
+            "term": "practical skills",
+            "meaning": "kỹ năng ứng dụng vào công việc hoặc đời sống",
+            "collocation": "develop practical skills",
+            "example": "Students develop practical skills through supervised projects.",
+            "level": ""
+          },
+          {
+            "term": "employment prospects",
+            "meaning": "triển vọng tìm việc làm phù hợp",
+            "collocation": "improve employment prospects",
+            "example": "Relevant experience can improve graduates' employment prospects.",
+            "level": ""
+          },
+          {
+            "term": "critical thinking",
+            "meaning": "khả năng xem xét lập luận và bằng chứng",
+            "collocation": "develop critical thinking",
+            "example": "Academic courses can develop critical thinking through discussion.",
+            "level": ""
+          },
+          {
+            "term": "balanced curriculum",
+            "meaning": "chương trình kết hợp các mục tiêu học phù hợp",
+            "collocation": "offer a balanced curriculum",
+            "example": "A university should offer a balanced curriculum with theory and practice.",
+            "level": ""
+          }
+        ],
+        "activities": [
+          {
+            "id": "topic_vocabulary-guided",
+            "type": "VOCAB_CONTEXT",
+            "stage": "GUIDED",
+            "instruction": "Chọn ba từ/cụm trong bảng, viết câu liên quan tới quan điểm về đại học.",
+            "context": "Bàn về việc kết hợp thực hành nghề nghiệp và kiến thức học thuật.",
+            "items": [
+              "practical skills",
+              "employment prospects",
+              "balanced curriculum"
+            ],
+            "example": ""
+          },
+          {
+            "id": "topic_vocabulary-transfer",
+            "type": "TRANSFER",
+            "stage": "TRANSFER",
+            "instruction": "Đề mới: trường phổ thông có nên dạy thêm kỹ năng sống? Viết đoạn ngắn với hai từ/cụm phù hợp, rồi thử viết lại không nhìn bảng.",
+            "context": "",
+            "items": [],
+            "example": ""
+          }
+        ],
+        "originalSentence": "",
+        "originalMeaning": "",
+        "grammarSourceKind": "DEMO_AUTHORING",
+        "teacherConfirmed": false
+      },
+      "teaching": {
+        "teacherNotes": "Học liệu tự biên soạn cho demo; giảng viên kiểm tra hình, bảng từ và phương án trước khi xuất bản. Chưa có band được giám khảo xác nhận.",
+        "modelResponse": "",
+        "sampleAnswers": [
+          {
+            "activityId": "topic_vocabulary-guided",
+            "acceptedExamples": [
+              "A balanced curriculum can improve graduates' employment prospects while encouraging critical thinking."
+            ],
+            "explanation": "Dùng từ theo đúng ngữ cảnh; không yêu cầu nhét tất cả từ vào một đoạn."
+          }
+        ],
+        "rubricSourceUrl": "https://ielts.org/cdn/ielts-guides/ielts-writing-band-descriptors.pdf"
+      },
+      "source": {
+        "url": "https://ielts.org/take-a-test/test-types/ielts-academic-test/ielts-academic-format-writing",
+        "note": "DEMO_WRITING_V1:TOPIC_VOCABULARY | Đề/học liệu tự biên soạn; nguồn IELTS chỉ tham khảo dạng nhiệm vụ. Cần giảng viên duyệt."
+      }
+    }
+  },
+  {
+    "key": "IDEA_LINKING",
+    "resource": {
+      "title": "Bổ trợ: Liên kết ý tương phản",
+      "skill": "WRITING",
+      "resourceKind": "REMEDIAL",
+      "activityType": "GUIDED",
+      "topic": "Education",
+      "levelFramework": "IELTS_PRACTICE",
+      "levelLabel": "",
+      "supportLevel": "GUIDED",
+      "content": {
+        "taskType": "TASK_2",
+        "activity": "IDEA_LINKING",
+        "prompt": "Nối hai ý tương phản và tổ chức đoạn có liên kết.",
+        "instructions": "Đọc kỹ yêu cầu và ngữ cảnh; trình bày bằng câu/đoạn của bạn.",
+        "minimumWords": 0,
+        "writingSeconds": 600,
+        "visualAssetId": null,
+        "visualType": "NONE",
+        "hasTimeDimension": false,
+        "visualUnit": "",
+        "visualGroups": [],
+        "visualPeriods": [],
+        "checklist": [
+          "Làm bước hướng dẫn",
+          "Giải thích lựa chọn/cách sửa",
+          "Tự vận dụng vào tình huống mới"
+        ],
+        "assessmentCriteria": [
+          "Task Response",
+          "Coherence and Cohesion",
+          "Lexical Resource",
+          "Grammatical Range and Accuracy"
+        ],
+        "vocabulary": [],
+        "activities": [
+          {
+            "id": "idea_linking-guided",
+            "type": "LINK_IDEAS",
+            "stage": "GUIDED",
+            "instruction": "Nối hai ý bằng although hoặc however; giữ đúng cấu trúc và quan hệ tương phản.",
+            "context": "Practical courses prepare students for jobs. Academic courses develop analytical thinking.",
+            "items": [
+              "Although + clause, clause",
+              "Clause. However, clause."
+            ],
+            "example": ""
+          },
+          {
+            "id": "idea_linking-transfer",
+            "type": "TRANSFER",
+            "stage": "TRANSFER",
+            "instruction": "Ý mới: thực tập mang lại kinh nghiệm, nghiên cứu giúp giải quyết vấn đề mới. Viết một đoạn liên kết ba câu.",
+            "context": "",
+            "items": [],
+            "example": ""
+          }
+        ],
+        "originalSentence": "",
+        "originalMeaning": "",
+        "grammarSourceKind": "DEMO_AUTHORING",
+        "teacherConfirmed": false
+      },
+      "teaching": {
+        "teacherNotes": "Học liệu tự biên soạn cho demo; giảng viên kiểm tra hình, bảng từ và phương án trước khi xuất bản. Chưa có band được giám khảo xác nhận.",
+        "modelResponse": "",
+        "sampleAnswers": [
+          {
+            "activityId": "idea_linking-guided",
+            "acceptedExamples": [
+              "Although practical courses prepare students for jobs, academic courses develop analytical thinking.",
+              "Practical courses prepare students for jobs. However, academic courses develop analytical thinking."
+            ],
+            "explanation": "Chọn từ nối theo quan hệ ý. However có cấu trúc và dấu câu riêng; không chỉ thay dấu phẩy tùy ý."
+          }
+        ],
+        "rubricSourceUrl": "https://ielts.org/cdn/ielts-guides/ielts-writing-band-descriptors.pdf"
+      },
+      "source": {
+        "url": "https://ielts.org/take-a-test/test-types/ielts-academic-test/ielts-academic-format-writing",
+        "note": "DEMO_WRITING_V1:IDEA_LINKING | Đề/học liệu tự biên soạn; nguồn IELTS chỉ tham khảo dạng nhiệm vụ. Cần giảng viên duyệt."
+      }
+    }
+  },
+  {
+    "key": "GRAMMAR_REPAIR",
+    "resource": {
+      "title": "Bổ trợ: Sửa lỗi although và but",
+      "skill": "WRITING",
+      "resourceKind": "REMEDIAL",
+      "activityType": "GUIDED",
+      "topic": "Education",
+      "levelFramework": "IELTS_PRACTICE",
+      "levelLabel": "",
+      "supportLevel": "GUIDED",
+      "content": {
+        "taskType": "TASK_2",
+        "activity": "GRAMMAR_REPAIR",
+        "prompt": "Sửa câu lỗi giữ nguyên quan hệ tương phản và luyện lại trong ngữ cảnh mới.",
+        "instructions": "Đọc kỹ yêu cầu và ngữ cảnh; trình bày bằng câu/đoạn của bạn.",
+        "minimumWords": 0,
+        "writingSeconds": 600,
+        "visualAssetId": null,
+        "visualType": "NONE",
+        "hasTimeDimension": false,
+        "visualUnit": "",
+        "visualGroups": [],
+        "visualPeriods": [],
+        "checklist": [
+          "Làm bước hướng dẫn",
+          "Giải thích lựa chọn/cách sửa",
+          "Tự vận dụng vào tình huống mới"
+        ],
+        "assessmentCriteria": [
+          "Task Response",
+          "Coherence and Cohesion",
+          "Lexical Resource",
+          "Grammatical Range and Accuracy"
+        ],
+        "vocabulary": [],
+        "activities": [
+          {
+            "id": "grammar_repair-guided",
+            "type": "REPAIR_SENTENCE",
+            "stage": "GUIDED",
+            "instruction": "Sửa câu gốc theo ít nhất một cách hợp lệ; giải thích thay đổi.",
+            "context": "Although practical courses are useful, but academic subjects remain important.",
+            "items": [
+              "Giữ quan hệ tương phản",
+              "Tránh although và but trong cùng cấu trúc"
+            ],
+            "example": ""
+          },
+          {
+            "id": "grammar_repair-transfer",
+            "type": "TRANSFER",
+            "stage": "TRANSFER",
+            "instruction": "Tình huống mới: học online linh hoạt nhưng cần tự quản lý thời gian. Viết một câu tương phản không lặp cấu trúc sai.",
+            "context": "",
+            "items": [],
+            "example": ""
+          }
+        ],
+        "originalSentence": "Although practical courses are useful, but academic subjects remain important.",
+        "originalMeaning": "Muốn diễn đạt rằng khóa học thực hành hữu ích nhưng môn học thuật vẫn quan trọng.",
+        "grammarSourceKind": "DEMO_AUTHORING",
+        "teacherConfirmed": false
+      },
+      "teaching": {
+        "teacherNotes": "Học liệu tự biên soạn cho demo; giảng viên kiểm tra hình, bảng từ và phương án trước khi xuất bản. Chưa có band được giám khảo xác nhận.",
+        "modelResponse": "",
+        "sampleAnswers": [
+          {
+            "activityId": "grammar_repair-guided",
+            "acceptedExamples": [
+              "Although practical courses are useful, academic subjects remain important.",
+              "Practical courses are useful, but academic subjects remain important."
+            ],
+            "explanation": "Có thể bỏ but hoặc bỏ Although và giữ dấu câu phù hợp. Đây là câu tự biên soạn, không giả làm câu trích từ bài nộp của học viên."
+          }
+        ],
+        "rubricSourceUrl": "https://ielts.org/cdn/ielts-guides/ielts-writing-band-descriptors.pdf"
+      },
+      "source": {
+        "url": "https://ielts.org/take-a-test/test-types/ielts-academic-test/ielts-academic-format-writing",
+        "note": "DEMO_WRITING_V1:GRAMMAR_REPAIR | Đề/học liệu tự biên soạn; nguồn IELTS chỉ tham khảo dạng nhiệm vụ. Cần giảng viên duyệt."
+      }
+    }
+  }
+]

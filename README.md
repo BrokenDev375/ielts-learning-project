@@ -1,8 +1,8 @@
 # IELTS Study — hệ thống lớp học và ôn luyện IELTS
 
-Dự án bài tập lớn **Lập trình mạng**, phát triển riêng trong thư mục này. Phiên bản hiện tại có **module 1: tài khoản và lớp học**, cùng **module 2: tạo, xuất bản và giao bài Speaking**. Ngân hàng/giao bài dùng API và database chung; nội dung Reading/Listening/Writing, làm/nộp bài, AI và profile triển khai tiếp theo plan.
+Dự án bài tập lớn **Lập trình mạng**, phát triển riêng trong thư mục này. Bản tích hợp có **module 1: tài khoản/lớp học** và **module 2: soạn, xuất bản, giao học liệu Speaking và Writing**. Phần làm/nộp bài, AI, hồ sơ trình độ và gamification là bước tiếp theo.
 
-Bản ORM mới khởi tạo ngày 13/10/2026: Spring Data JPA/Hibernate, Hibernate ddl-auto=validate, open-in-view=false. Docker project ielts-learning-orm và database/volume riêng. Module 1 được commit trước trên main; Speaking tiếp tục trên feature/speaking. Thay đổi stack tiếp theo phải thống nhất với người phụ trách trước khi triển khai.
+Bản ORM mới khởi tạo ngày 13/10/2026: Spring Data JPA/Hibernate, Hibernate ddl-auto=validate, open-in-view=false. Docker project ielts-learning-orm và database/volume riêng. Writing đã merge vào main; feature/speaking đã tích hợp main để phục vụ đồng thời hai kỹ năng. Thay đổi stack tiếp theo phải thống nhất với người phụ trách trước khi triển khai.
 
 ## Chức năng hiện có
 
@@ -15,16 +15,22 @@ Bản ORM mới khởi tạo ngày 13/10/2026: Spring Data JPA/Hibernate, Hibern
 - Yêu cầu tạo lớp cùng requestId/nội dung được trả lại lớp cũ; tham gia/xóa/rời lớp không ghi trùng.
 - MySQL lưu tài khoản/lớp/thành viên qua những lần chạy; Flyway quản lý schema.
 - Giao diện responsive cho giảng viên/học viên, thông báo lỗi và giữ nội dung biểu mẫu khi yêu cầu chưa thành công.
-- Speaking: soạn bài nói chính/test, bài Phát triển câu trả lời và bài Phát âm theo âm; checklist, tiêu chí, outline tham khảo riêng cho giảng viên, từ/câu/phiên âm/audio mẫu.
-- Lưu bản nháp, xem trước, xuất bản; sửa bài xuất bản tạo phiên bản mới. Bài đã giao giữ phiên bản cũ.
-- Giao cho toàn bộ thành viên hiện tại hoặc học viên được chọn; lưu thời gian mở/hạn nộp, số lần làm và chính sách phản hồi cho luồng nộp bài tiếp theo.
-- Học viên xem bài được giao, hướng dẫn và audio mẫu theo đúng quyền. Server kiểm tra thời gian mở, thành viên và người nhận.
 
-### Demo Speaking
+## Speaking hiện có
 
-Đăng nhập giảng viên → **Bài Speaking**. Khi bật demo, ngân hàng có ba bài mẫu ở trạng thái nháp. Kiểm tra nội dung → **Xuất bản** → **Giao bài** cho lớp có học viên. Học viên đăng nhập → **Bài được giao** → **Xem đề bài**.
+- Soạn bài nói chính, phát triển câu trả lời và phát âm theo âm; xem trước, xuất bản, giữ lịch sử và giao bài.
+- Upload/phát audio WAV, MP3, OGG có phân quyền; ba bản nháp mẫu và bốn WAV tổng hợp cho demo.
+- [Payload, seed và nguồn Speaking](docs/SPEAKING_MODULE_2.md).
 
-Audio phát âm mẫu được tổng hợp bằng Microsoft Zira trên Windows, không phải bản thu giám khảo. Giảng viên cần kiểm tra nội dung/phiên âm/audio trước xuất bản. Seed giữ nguyên bài đã có khi restart. Chi tiết dữ liệu và phần dùng chung cho nhóm ở [Speaking module 2](docs/SPEAKING_MODULE_2.md).
+Giảng viên có hai mục Bài Speaking/Bài Writing. Học viên xem chung tại Bài được giao, lọc theo kỹ năng; preview dùng đúng schema và loại bỏ tham khảo riêng.
+
+## Writing hiện có
+
+- Soạn Task 1 Academic/Task 2, tải hình PNG/JPEG có phân quyền, lưu nháp/xem trước/xuất bản và lịch sử phiên bản.
+- Năm nhãn bổ trợ: chọn overview, ngôn ngữ mô tả, từ vựng chủ đề, liên kết ý, sửa ngữ pháp; có bước hướng dẫn và vận dụng.
+- Giao cho cả lớp tại thời điểm giao hoặc từng học viên; người học nhận đúng phiên bản, không nhận bài mẫu/ghi chú riêng.
+- Bảy bản nháp demo tự biên soạn; giảng viên kiểm tra trước khi phát, chưa có band đã được kiểm chứng.
+- [Payload, seed, nguồn và cách demo](docs/WRITING_MODULE_2.md).
 
 ## Chạy nhanh bằng Docker trên Windows
 
@@ -58,7 +64,7 @@ Linux/macOS: sh scripts/start.sh. Script này dùng .env.example nếu .env chư
     docker compose logs --tail=100 server
     docker compose logs --tail=100 mysql
 
-MySQL dùng named volume mysql_data; audio dùng asset_data. Dừng/recreate container bằng các lệnh trên giữ dữ liệu và tệp. Đăng nhập lại nếu session đã hết hạn hoặc backend được khởi động lại. Khi chạy Java trực tiếp, ASSET_DIRECTORY mặc định là ./data/assets tính từ thư mục chạy server.
+MySQL dùng named volume mysql_data; hình dùng asset_data. Dừng/recreate container bằng các lệnh trên giữ dữ liệu. Đăng nhập lại nếu session đã hết hạn hoặc backend được khởi động lại.
 
 ### Cổng và kết nối
 
@@ -102,18 +108,16 @@ Frontend Vite proxy /api sang 127.0.0.1:8080. Có thể đổi API_PROXY_TARGET 
 
 ## Database
 
-Schema trong source/server/src/main/resources/db/migration/: V1 tài khoản/lớp và V2 tài liệu/giao bài. V2 bổ sung 13 bảng từ thiết kế tổng thể và 16 nhãn. Flyway tự nâng database đã có V1; không nhập lại schema tham chiếu vào database đang dùng.
+Schema tại source/server/src/main/resources/db/migration: V1 tài khoản/lớp và V2 tài nguyên/giao bài (13 bảng mới). V2 giống nhánh Speaking, giữ nguyên khi hợp nhất; V3–V6 chưa triển khai. Flyway chạy khi server khởi động, không cần tự nhập SQL.
 
 | Bảng | Vai trò |
 |---|---|
 | users | Email duy nhất, mật khẩu đã băm, tên, vai trò |
 | classrooms | Chủ sở hữu, tên/mô tả, mã tham gia duy nhất, requestId chống tạo trùng |
 | class_members | Quan hệ nhiều lớp–nhiều học viên; khóa chính kép chống tham gia trùng |
-| resources / resource_versions | Danh tính bài và phiên bản nội dung |
-| assets / resource_assets / resource_labels / learning_labels | Metadata audio, liên kết tệp và nhãn |
-| assignments / assignment_recipients | Phiên bản được giao và snapshot người nhận |
-| questions / question_options / listening_media / listening_transcript_versions / listening_segments | Bảng chung đã tạo; API nội dung Reading/Listening triển khai tiếp |
 | flyway_schema_history | Lịch sử migration do Flyway quản lý |
+
+V2 có assets, labels, resources/resource_versions, liên kết hình/nhãn, assignments/assignment_recipients và các bảng chuẩn bị trắc nghiệm/nghe. Writing dùng content_json/teaching_json; hình liên kết qua resource_assets.role=VISUAL. Chi tiết tại DATABASE_DESIGN.md.
 
 Session hiện lưu trong bộ nhớ backend. Dữ liệu nghiệp vụ nằm trong MySQL, session hết hiệu lực khi backend restart.
 
@@ -160,7 +164,7 @@ E2E cần bản ứng dụng đang chạy tại http://127.0.0.1:5173, có tài 
 
 Bộ test API kiểm tra đăng nhập/đăng ký, BCrypt, CSRF, giả vai trò, truy cập lớp của người khác, nhiều lớp, chỉnh sửa/xóa/rời lớp, request trùng và 4 request đồng thời. Browser test dùng hai browser context độc lập cho giảng viên/học viên.
 
-Kết quả ở [module 1](statics/results/module-1-validation.md) và [Speaking module 2](statics/results/speaking-module-2-validation.md). Test API bổ sung quyền tài liệu/audio, phiên bản bất biến, người nhận snapshot/chọn riêng, yêu cầu trùng/đồng thời và thời gian mở. Browser test kiểm tra tạo/giao bài, học viên mở phiên bản cũ, audio thật và mobile. Test chức năng chưa thay cho benchmark hoặc đánh giá hiệu quả học tập.
+Bản tích hợp có 31 API test (12 module 1 + 8 Speaking + 11 Writing) và 11 browser test, gồm kiểm tra một lớp nhận cả hai kỹ năng. [Kiểm tra hợp nhất](statics/results/speaking-writing-merge-validation.md). [Kết quả Writing](statics/results/module-2-writing-validation.md); kết quả module 1 giữ riêng. Test chức năng chưa thay cho benchmark hiệu năng hoặc đánh giá hiệu quả học tập.
 
 ## Cấu trúc source
 
@@ -188,8 +192,7 @@ Cấu trúc package và trách nhiệm từng tầng: [BACKEND_STRUCTURE.md](doc
 
 ## Giới hạn và phần phát triển tiếp
 
-- Module 2 hiện hỗ trợ nội dung Speaking. Có ngân hàng bài bổ trợ và giao thủ công; tự đề xuất theo profile triển khai sau.
-- Các điều kiện số lần làm, hạn nộp và mở phản hồi được lưu để module 3 sử dụng. Hiện chưa có viết outline, ghi âm/nộp bài, AI, chấm bài, profile IELTS hoặc XP.
+- Hiện có tài khoản/lớp, học liệu/giao bài Speaking/Writing và các bước bổ trợ được soạn sẵn; chưa có nhập/lưu nháp/nộp bài của học viên, AI, profile IELTS, đề xuất bổ trợ tự động hoặc XP.
 - Session ở RAM của một backend; chưa có nhiều backend, quên mật khẩu, xác minh email hoặc hệ thống cấp tài khoản giảng viên thực tế.
 - Danh sách hiện phù hợp prototype nhỏ, chưa có phân trang/rate limiting hoặc benchmark tải.
 - Các cơ chế quyền, idempotency và Docker là phần nền tảng kỹ thuật. Không tự gọi chúng là novelty đã được chứng minh.

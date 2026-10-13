@@ -1,27 +1,14 @@
 import { useEffect, useState } from 'react';
 import { api, errorMessage } from '../../api';
 import type { Classroom, User } from '../../types';
-import type { Assignment, AssignedDetail, LearningResource, ResourceVersion } from '../learning/types';
+import type { Assignment } from '../learning/types';
+import type { AssignedDetail, LearningResource, ResourceVersion } from './types';
+import SpeakingPreview from './SpeakingPreview';
 import AssignmentForm from '../learning/AssignmentForm';
 import SpeakingEditor, { taskNames } from './SpeakingEditor';
 import './speaking.css';
 
 function when(value: string | null) { return value ? new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(value)) : 'Không giới hạn'; }
-function ResourcePreview({ version, teacher }: { version: ResourceVersion; teacher: boolean }) {
-  const c = version.content;
-  return <div className="learning-preview">
-    <div className="learning-badges"><span className="role-pill">{taskNames[c.taskType]}</span><span className="role-pill">{c.part ? 'Part ' + c.part : 'Bài luyện riêng'}</span>{version.levelLabel && <span className="role-pill">{version.levelFramework}: {version.levelLabel}</span>}</div>
-    <h2>{version.title}</h2>{version.topic && <p className="muted">{version.topic}</p>}
-    <div className="learning-prompt"><h3>Đề bài</h3><p>{c.prompt || 'Chưa có đề bài.'}</p></div>
-    {c.instructions && <section><h3>Hướng dẫn</h3><p>{c.instructions}</p></section>}
-    <p className="learning-timing">Chuẩn bị: {c.preparationSeconds} giây · Nói: {c.speakingSeconds} giây</p>
-    {!!c.checklist.length && <section><h3>Checklist cần đạt</h3><ul>{c.checklist.map((s, n) => <li key={n}>{s}</li>)}</ul></section>}
-    {!!c.assessmentCriteria.length && <section><h3>Tiêu chí đánh giá</h3><ul>{c.assessmentCriteria.map((s, n) => <li key={n}>{s}</li>)}</ul></section>}
-    {c.taskType === 'PRONUNCIATION' && <section><h3>Âm mục tiêu: {c.phonemes.join(', ')}</h3>{c.items.map((item, n) => <div className="learning-word" key={n}><strong>{item.text}</strong><p>{item.ipa}</p>{item.audioAssetId && <audio controls preload="none" src={'/api/assets/' + item.audioAssetId} />}</div>)}</section>}
-    {teacher && version.teaching && <section className="learning-teacher-notes"><h3>Tham khảo riêng cho giảng viên</h3>{version.teaching.outlineExamples.map((s, n) => <p key={n}>{s}</p>)}<p>{version.teaching.teacherNotes}</p></section>}
-    {version.source?.url && <p><a href={version.source.url} target="_blank" rel="noreferrer">Nguồn tham khảo</a></p>}
-  </div>;
-}
 export default function SpeakingWorkspace({ user, rooms }: { user: User; rooms: Classroom[] }) {
   const teacher = user.role === 'TEACHER';
   const [tab, setTab] = useState<'bank' | 'assigned'>(teacher ? 'bank' : 'assigned');
@@ -65,7 +52,7 @@ export default function SpeakingWorkspace({ user, rooms }: { user: User; rooms: 
     <div className="learning-section-heading"><span className="eyebrow">{teacher ? 'XEM TRƯỚC BÀI SPEAKING' : 'BÀI SPEAKING ĐƯỢC GIAO'}</span><button className="button secondary" onClick={() => { setPreview(null); setAssignedDetail(null); }}>Quay lại</button></div>
     {preview && <label>Phiên bản bài<select value={preview.id} onChange={e => setPreview(history.find(v => v.id === Number(e.target.value))!)}>{history.map(v => <option key={v.id} value={v.id}>Phiên bản {v.versionNo} · {v.status === 'DRAFT' ? 'Bản nháp' : 'Đã xuất bản'}</option>)}</select></label>}
     {assignedDetail && <p className="learning-note">{assignedDetail.assignment.classroomName} · Hạn nộp: {when(assignedDetail.dueAt)} · Phiên bản {assignedDetail.versionNo}</p>}
-    <ResourcePreview version={preview ?? { ...assignedDetail!, id: assignedDetail!.resourceVersionId }} teacher={teacher} />
+    <SpeakingPreview version={preview ?? { ...assignedDetail!, id: assignedDetail!.resourceVersionId }} teacher={teacher} />
     {teacher && preview?.status === 'PUBLISHED' && <div className="learning-actions"><button className="button primary" onClick={() => { setGiving(preview); setPreview(null); }}>Giao phiên bản này</button></div>}
   </section>;
   const filteredResources = resources.filter(r => (r.version.title + ' ' + (r.version.topic ?? '')).toLocaleLowerCase('vi').includes(query.toLocaleLowerCase('vi')));

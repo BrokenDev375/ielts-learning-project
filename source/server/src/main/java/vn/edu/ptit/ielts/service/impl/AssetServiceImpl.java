@@ -1,9 +1,11 @@
 package vn.edu.ptit.ielts.service.impl;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.*;
 import java.security.MessageDigest;
 import java.util.*;
+import javax.imageio.ImageIO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
@@ -32,7 +34,19 @@ public class AssetServiceImpl implements AssetService {
     }
     @Override
     @Transactional(rollbackFor=Exception.class) public LearningViews.Asset store(byte[] bytes,String name,long owner) throws Exception {
-        String mime=audioType(bytes);
+        return storeChecked(bytes,name,owner,audioType(bytes));
+    }
+    @Override
+    @Transactional(rollbackFor=Exception.class) public LearningViews.Asset uploadImage(MultipartFile file,UserPrincipal u) throws Exception {
+        ResourceAccess.requireTeacher(u);
+        if(file.isEmpty() || file.getSize()>5*1024*1024)throw invalidImage();
+        return storeImage(file.getBytes(),file.getOriginalFilename(),u.id());
+    }
+    @Override
+    @Transactional(rollbackFor=Exception.class) public LearningViews.Asset storeImage(byte[] bytes,String name,long owner) throws Exception {
+        return storeChecked(bytes,name,owner,imageType(bytes));
+    }
+    private LearningViews.Asset storeChecked(byte[] bytes,String name,long owner,String mime) throws Exception {
         String key=UUID.randomUUID().toString();
         Path target=root.resolve(key);
         try {
@@ -72,4 +86,21 @@ public class AssetServiceImpl implements AssetService {
         throw new ApiException(HttpStatus.BAD_REQUEST,"INVALID_AUDIO","Chọn tệp WAV, MP3 hoặc OGG có định dạng hợp lệ.");
     }
     private static boolean ascii(byte[] b,int offset,String s){for(int i=0;i<s.length();i++)if(b[offset+i]!=(byte)s.charAt(i))return false;return true;}
+    private static ApiException invalidImage(){return new ApiException(HttpStatus.BAD_REQUEST,"INVALID_IMAGE","Chọn hình PNG/JPEG hợp lệ, tối đa 5 MB và 12 triệu pixel.");}
+    private static String imageType(byte[] bytes) {
+        if(bytes.length==0 || bytes.length>5*1024*1024)throw invalidImage();
+        try(var input=ImageIO.createImageInputStream(new ByteArrayInputStream(bytes))){
+            var readers=ImageIO.getImageReaders(input);
+            if(!readers.hasNext())throw invalidImage();
+            var reader=readers.next();
+            try {
+                reader.setInput(input,true,true);
+                var format=reader.getFormatName().toLowerCase(Locale.ROOT);
+                if(!List.of("png","jpeg","jpg").contains(format))throw invalidImage();
+                if(reader.getWidth(0)<=0 || reader.getHeight(0)<=0 || (long)reader.getWidth(0)*reader.getHeight(0)>12_000_000)throw invalidImage();
+                if(reader.read(0)==null)throw invalidImage();
+                return format.equals("png")?"image/png":"image/jpeg";
+            } finally {reader.dispose();}
+        } catch(ApiException ex){throw ex;} catch(IOException | RuntimeException ex){throw invalidImage();}
+    }
 }

@@ -2,7 +2,7 @@
 
 Ngày thiết kế: **12/10/2026**. Database: **MySQL 8.4 / InnoDB / UTF-8**. Thiết kế bám [plan](PLAN_IELTS_LEARNING_SYSTEM.md), giữ schema tài khoản/lớp đã có và dữ liệu/API Reading–Listening tại mục 6.4.
 
-Thiết kế tổng thể có **44 bảng**, chia theo giai đoạn. Ứng dụng đã triển khai 3 bảng V1 và 13 bảng V2 qua Flyway, phục vụ ngân hàng/giao bài Speaking. V3–V6 tiếp tục là thiết kế. Bảng câu hỏi/nguồn nghe đã có, API nội dung Reading/Listening sẽ bổ sung theo kỹ năng. SQL tham chiếu được đặt trong docs/database để phục vụ review/kiểm tra.
+Thiết kế tổng thể có **44 bảng**, chia theo giai đoạn. Bản tích hợp đã triển khai 3 bảng V1 và 13 bảng V2 qua Flyway; các nhóm V3–V6 là thiết kế để triển khai tiếp. SQL tham chiếu được đặt trong docs/database để phục vụ review/kiểm tra.
 
 ## Tài liệu sử dụng khi chia việc
 
@@ -17,18 +17,18 @@ Thiết kế tổng thể có **44 bảng**, chia theo giai đoạn. Ứng dụn
 
 ## 1. Thứ tự triển khai
 
-V2 đã có migration V2__resources_and_assignments.sql, giữ nguyên V1. V3–V6 là các nhóm thiết kế tiếp theo; các thành viên thống nhất số migration trước khi thêm file.
+V1 và V2 đã là migration thực tế. V3–V6 là cách nhóm phần thiết kế tiếp theo. V2 dùng chung nguyên nội dung với feature/speaking; không chạy schema.mysql.sql vào database ứng dụng đã có.
 
 | Giai đoạn | Số bảng | Phần việc |
 |---|---:|---|
 | V1 — đã có | 3 | users, classrooms, class_members |
-| V2 — đã tạo bảng | 13 | assets, nhãn, resources/versions, câu hỏi/lựa chọn, nguồn nghe/đoạn/transcript, assignments/recipients |
+| V2 — đã có schema | 13 | assets, nhãn, resources/versions, câu hỏi/lựa chọn, nguồn nghe/đoạn/transcript, assignments/recipients |
 | V3 | 9 | lần làm, nháp, lựa chọn, tiến trình/nộp đoạn, bài nộp, lựa chọn/tệp lúc nộp, review |
 | V4 | 4 | rubric, outline Speaking, kết quả AI/công cụ, đánh giá giảng viên |
 | V5 | 9 | đợt test, điểm kỹ năng, profile chung/lịch sử, nhu cầu và gợi ý bổ trợ |
 | V6 | 6 | cấu hình XP, thưởng, ngày học, huy hiệu đã trao/định nghĩa, thực nghiệm |
 
-Ưu tiên triển khai V2 và V3 để Reading/Listening có thể tải bài, lưu nháp và nộp qua mạng. Các cột/FK nối rubric, outline và profile được ghi rõ thời điểm bổ sung. V1 đã áp dụng giữ nguyên; bước triển khai tiếp tạo migration mới.
+V2 phục vụ Speaking/Writing authoring/assignment; bảng câu hỏi/nghe đã tạo nhưng chưa có handler theo kỹ năng trên nhánh này. Triển khai V3 để lưu nháp/nộp bài và nối Reading/Listening. Các cột/FK nối rubric, outline và profile được ghi rõ thời điểm bổ sung. V1/V2 đã áp dụng giữ nguyên; bước tiếp theo tạo migration mới.
 
 ## 2. Những quyết định chính
 

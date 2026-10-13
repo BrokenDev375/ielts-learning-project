@@ -32,6 +32,10 @@ public class LearningServiceImpl implements LearningService {
             if(!db.ownedAudio(id,owner))
                 throw new ApiException(HttpStatus.BAD_REQUEST,"INVALID_ASSET","Audio không tồn tại hoặc không thuộc giảng viên.");
         }
+        for(long id:handler(i.skill()).imageAssets(i.content())) {
+            if(!db.ownedImage(id,owner))
+                throw new ApiException(HttpStatus.BAD_REQUEST,"INVALID_ASSET","Hình không tồn tại hoặc không thuộc giảng viên.");
+        }
     }
     @Override
     public List<LearningViews.Resource> list(UserPrincipal u,String skill){ResourceAccess.requireTeacher(u);return db.list(u.id(),skill);}
@@ -43,7 +47,7 @@ public class LearningServiceImpl implements LearningService {
     @Transactional public LearningViews.Resource create(ResourceRequests.ResourceInput i,UserPrincipal u) {
         ResourceAccess.requireTeacher(u);var h=handler(i.skill());h.validate(i,false);assets(i,u.id());
         long id=db.createResource(u.id(),i.skill()),v=db.createVersion(id,1,i);
-        db.links(v,i.skill(),h.audioAssets(i.content()),h.labels(i.content()));
+        db.links(v,i.skill(),h.audioAssets(i.content()),h.imageAssets(i.content()),h.labels(i.content()));
         return new LearningViews.Resource(id,i.skill(),db.version(v));
     }
     @Override
@@ -53,7 +57,7 @@ public class LearningServiceImpl implements LearningService {
         var h=handler(i.skill());h.validate(i,false);assets(i,u.id());
         long v=current.id();
         if(current.status().equals("DRAFT"))db.updateVersion(v,i);else v=db.createVersion(id,current.versionNo()+1,i);
-        db.links(v,i.skill(),h.audioAssets(i.content()),h.labels(i.content()));
+        db.links(v,i.skill(),h.audioAssets(i.content()),h.imageAssets(i.content()),h.labels(i.content()));
         return new LearningViews.Resource(id,i.skill(),db.version(v));
     }
     @Override

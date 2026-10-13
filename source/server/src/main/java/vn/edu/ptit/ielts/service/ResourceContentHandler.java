@@ -8,5 +8,6 @@ public interface ResourceContentHandler {
     String skill();
     void validate(ResourceRequests.ResourceInput input, boolean publishing);
     List<Long> audioAssets(JsonNode content);
+    default List<Long> imageAssets(JsonNode content) { return List.of(); }
     List<String> labels(JsonNode content);
 }

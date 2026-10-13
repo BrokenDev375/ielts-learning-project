@@ -10,5 +10,7 @@ import vn.edu.ptit.ielts.security.UserPrincipal;
 public interface AssetService {
     LearningViews.Asset upload(MultipartFile file, UserPrincipal u) throws Exception;
     LearningViews.Asset store(byte[] bytes, String name, long owner) throws Exception;
+    LearningViews.Asset uploadImage(MultipartFile file, UserPrincipal u) throws Exception;
+    LearningViews.Asset storeImage(byte[] bytes, String name, long owner) throws Exception;
     ResponseEntity<Resource> get(long id, UserPrincipal u);
 }

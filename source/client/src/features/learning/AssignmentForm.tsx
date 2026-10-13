@@ -3,6 +3,7 @@ import type { FormEvent } from 'react';
 import { api, errorMessage, requestId } from '../../api';
 import type { Classroom, Member } from '../../types';
 import type { Assignment, ResourceVersion } from './types';
+import { skillNames } from './types';
 
 export default function AssignmentForm({ version, rooms, onDone, onCancel }: {
   version: ResourceVersion; rooms: Classroom[]; onDone: (assignment: Assignment) => void; onCancel: () => void;
@@ -37,7 +38,7 @@ export default function AssignmentForm({ version, rooms, onDone, onCancel }: {
         allowLate: late, maxAttempts: attempts, feedbackPolicy: feedback }));
     } catch (ex) { setError(errorMessage(ex)); } finally { setBusy(false); }
   }
-  return <section className="learning-panel"><div className="learning-section-heading"><div><span className="eyebrow">PHÂN PHỐI BÀI TẬP</span><h2>Giao bài Speaking</h2></div><button className="button secondary" disabled={busy} onClick={onCancel}>Quay lại</button></div>
+  return <section className="learning-panel"><div className="learning-section-heading"><div><span className="eyebrow">PHÂN PHỐI BÀI TẬP</span><h2>Giao bài {skillNames[version.skill]}</h2></div><button className="button secondary" disabled={busy} onClick={onCancel}>Quay lại</button></div>
     <p className="learning-note"><strong>{version.title}</strong> · Phiên bản {version.versionNo}</p>
     {error && <div className="error-box" role="alert">{error}</div>}
     {!rooms.length ? <p className="muted">Tạo lớp và thêm học viên trước khi giao bài.</p> : <form onSubmit={submit} onChange={() => { id.current = requestId(); }}><fieldset disabled={busy}>

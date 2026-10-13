@@ -1,7 +1,11 @@
-# Dữ liệu demo module 1
+# Dữ liệu demo
 
 Hai tài khoản mẫu được DemoInitializer tạo khi DEMO_ENABLED=true, theo cấu hình .env. Mật khẩu băm trước khi lưu; không có file SQL chứa mật khẩu người dùng thật.
 
-Database ban đầu chưa có lớp. Giảng viên tạo lớp và sinh viên đăng ký/tham gia qua giao diện để demo các luồng mạng. Không đưa bộ Reading/Listening/Speaking/Writing vào module này.
+Trên feature/writing, DemoWritingInitializer tạo bảy học liệu DRAFT: Task 1, Task 2 và năm bài bổ trợ. Chart/CSV Riverton, đề, từ/câu, hoạt động và bài tham khảo được tự biên soạn cho demo, chưa có band đã được kiểm chứng. [Chi tiết seed/nguồn](../../docs/WRITING_MODULE_2.md).
+
+Ban đầu chưa có lớp/bài giao. Giảng viên tạo lớp, duyệt học liệu rồi giao; học viên tham gia qua giao diện. Restart không tạo trùng seed còn marker DEMO_WRITING_V1.
 
 Testcontainers dùng database/container riêng và fixture riêng. Browser tests tạo lớp/học viên thử trong database demo mà chúng đang chạy; không dùng E2E trên dữ liệu sử dụng thực tế.
+
+Bản tích hợp còn có ba Speaking DRAFT (bài chính, phát triển câu trả lời, phát âm /θ/) và bốn WAV tổng hợp Microsoft Zira Desktop. Seed kiểm tra marker riêng theo kỹ năng, tổng 10 bài; không tự xuất bản. Nguồn/cách duyệt ở docs/SPEAKING_MODULE_2.md.

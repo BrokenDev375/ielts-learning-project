@@ -1,6 +1,7 @@
 package vn.edu.ptit.ielts.exception;
 
 import java.util.LinkedHashMap;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -47,8 +48,9 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError("DATA_CONFLICT", "Dữ liệu đã thay đổi hoặc bị trùng. Vui lòng tải lại."));
     }
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    ResponseEntity<ApiError> uploadTooLarge() {
-        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(new ApiError("AUDIO_TOO_LARGE", "Audio cần nhỏ hơn hoặc bằng 5 MB."));
+    ResponseEntity<ApiError> uploadTooLarge(HttpServletRequest request) {
+        boolean image=request.getRequestURI().equals("/api/assets/images");
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(new ApiError(image?"IMAGE_TOO_LARGE":"AUDIO_TOO_LARGE", image?"Hình cần nhỏ hơn hoặc bằng 5 MB.":"Audio cần nhỏ hơn hoặc bằng 5 MB."));
     }
     @ExceptionHandler(DataAccessException.class)
     ResponseEntity<ApiError> database(DataAccessException ex) {

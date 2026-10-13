@@ -16,5 +16,7 @@ public class AssetController {
     public AssetController(AssetService service){this.service=service;}
     @PostMapping(consumes=MediaType.MULTIPART_FORM_DATA_VALUE) @ResponseStatus(HttpStatus.CREATED)
     public LearningViews.Asset upload(@RequestPart("file") MultipartFile file,@AuthenticationPrincipal UserPrincipal u) throws Exception {return service.upload(file,u);}
+    @PostMapping(value="/images",consumes=MediaType.MULTIPART_FORM_DATA_VALUE) @ResponseStatus(HttpStatus.CREATED)
+    public LearningViews.Asset uploadImage(@RequestPart("file") MultipartFile file,@AuthenticationPrincipal UserPrincipal u) throws Exception {return service.uploadImage(file,u);}
     @GetMapping("/{id}") public ResponseEntity<Resource> get(@PathVariable long id,@AuthenticationPrincipal UserPrincipal u){return service.get(id,u);}
 }

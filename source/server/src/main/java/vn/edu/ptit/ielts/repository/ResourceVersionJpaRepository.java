@@ -15,4 +15,6 @@ public interface ResourceVersionJpaRepository extends JpaRepository<ResourceVers
     List<ResourceVersionEntity> latest(@Param("owner") long owner,@Param("skill") String skill);
     @Query("select v from ResourceVersionEntity v where v.resource.owner.id=:owner and v.skill='SPEAKING' and v.activityType=:activity")
     List<ResourceVersionEntity> seedCandidates(@Param("owner") long owner,@Param("activity") String activity);
+    @Query("select v from ResourceVersionEntity v where v.resource.owner.id=:owner and v.skill=:skill")
+    List<ResourceVersionEntity> seedCandidatesForSkill(@Param("owner") long owner,@Param("skill") String skill);
 }

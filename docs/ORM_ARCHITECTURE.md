@@ -27,3 +27,7 @@ Nguồn kỹ thuật:
 - [Spring Boot 3.5 — SQL/JPA](https://docs.spring.io/spring-boot/3.5/reference/data/sql.html).
 - [Spring Data JPA 3.5 — Transactions](https://docs.spring.io/spring-data/jpa/reference/3.5/jpa/transactions.html).
 - [Spring Data JPA 3.5 — Locking](https://docs.spring.io/spring-data/jpa/reference/3.5/jpa/locking.html).
+
+## Module 2 Writing
+
+Entity chung V2: Resource, ResourceVersion, ResourceAsset, ResourceLabel, Assignment, AssignmentRecipient, Asset và Label. Service khóa version khi lưu/xuất bản và khóa lớp khi giao để chốt người nhận; unique/requestId chống giao trùng. Metadata hình ở MySQL, byte ở asset_data; upload rollback dọn tệp vừa ghi. WritingPayloads/WritingContentHandler/DemoWritingInitializer nằm ở các tầng tương ứng, không tạo schema riêng cho Writing.

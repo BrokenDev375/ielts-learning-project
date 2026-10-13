@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { api, errorMessage } from '../../api';
-import type { Asset, LearningResource, ResourceInput, SpeakingContent } from '../learning/types';
+import type { Asset } from '../learning/types';
+import type { LearningResource, ResourceInput, SpeakingContent } from './types';
 
 export const taskNames = { MAIN: 'Bài nói chính / test', DEVELOPMENT: 'Phát triển câu trả lời', PRONUNCIATION: 'Phát âm theo âm' };
 export const criteria = ['Fluency and coherence', 'Lexical resource', 'Grammatical range and accuracy', 'Pronunciation'];

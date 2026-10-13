@@ -76,9 +76,14 @@ public class LearningRepositoryImpl implements LearningRepository {
     }
     @Override
     @Transactional public void links(long id,String skill,List<Long> assetIds,List<String> labelCodes) {
+        links(id,skill,assetIds,List.of(),labelCodes);
+    }
+    @Override
+    @Transactional public void links(long id,String skill,List<Long> assetIds,List<Long> imageIds,List<String> labelCodes) {
         resourceAssets.deleteForVersion(id);resourceLabels.deleteForVersion(id);
         var version=versions.getReferenceById(id);
         resourceAssets.saveAllAndFlush(assetIds.stream().distinct().map(a->new ResourceAssetEntity(version,assets.getReferenceById(a))).toList());
+        resourceAssets.saveAllAndFlush(imageIds.stream().distinct().map(a->new ResourceAssetEntity(version,assets.getReferenceById(a),"VISUAL")).toList());
         resourceLabels.saveAllAndFlush(labelCodes.stream().distinct().map(c->new ResourceLabelEntity(version,labels.getReferenceById(c),skill)).toList());
     }
     @Override
@@ -112,6 +117,8 @@ public class LearningRepositoryImpl implements LearningRepository {
     @Override
     public boolean ownedAudio(long id,long owner){return assets.existsByIdAndOwnerIdAndStatusAndMimeTypeStartingWith(id,owner,"READY","audio/");}
     @Override
+    public boolean ownedImage(long id,long owner){return assets.existsByIdAndOwnerIdAndStatusAndMimeTypeStartingWith(id,owner,"READY","image/");}
+    @Override
     public boolean assetVisible(long id,long actor,Role role){return role==Role.TEACHER?assets.existsByIdAndOwnerIdAndStatus(id,actor,"READY"):assets.visibleToStudent(id,actor,Instant.now())>0;}
     @Override
     public AssetEntity asset(long id){return assets.findById(id).orElseThrow();}
@@ -124,4 +131,6 @@ public class LearningRepositoryImpl implements LearningRepository {
     @Transactional public void lockUser(long owner){users.lockById(owner).orElseThrow();}
     @Override
     public boolean existingSeed(long owner,String activity){return versions.seedCandidates(owner,activity).stream().anyMatch(v->v.getSource()!=null && v.getSource().path("note").asText().startsWith("DEMO_SPEAKING_V1"));}
+    @Override
+    public boolean existingSeed(long owner,String skill,String marker){return versions.seedCandidatesForSkill(owner,skill).stream().anyMatch(v->v.getSource()!=null && v.getSource().path("note").asText().startsWith(marker));}
 }

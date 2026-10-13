@@ -7,8 +7,8 @@ Nhánh feature/speaking triển khai tạo, xuất bản và giao bài; học vi
 - Migration V2__resources_and_assignments.sql tạo toàn bộ 13 bảng V2 và danh mục 16 nhãn đúng thiết kế. Giữ nguyên V1 đã áp dụng. Không tạo lại các bảng resources/assignments hoặc nhập schema.mysql.sql vào database ứng dụng.
 - Dữ liệu qua entity/JpaRepository/JPQL; xem [quy ước ORM](ORM_ARCHITECTURE.md). Service giữ transaction và khóa hàng bằng JPA; không truy vấn SQL trực tiếp trong code nghiệp vụ.
 - Nội dung dùng chung theo tầng: dto/ResourceRequests và LearningViews; repository/LearningRepository; service/LearningService; controller/LearningController. AssetService/AssetController nằm cùng tầng tương ứng. Xem [cấu trúc backend](BACKEND_STRUCTURE.md).
-- ResourceContentHandler là điểm mở rộng cho từng kỹ năng. Hiện có SpeakingContentHandler; Reading/Listening/Writing bổ sung handler, kiểm tra JSON và liên kết riêng. API trả SKILL_NOT_SUPPORTED cho kỹ năng chưa có handler.
-- source/client/src/features/learning giữ hợp đồng hiện tại và form giao bài; features/speaking giữ editor/preview/ngân hàng. Khi thêm kỹ năng, tổng quát hóa type content có phân biệt skill, không ép nội dung kỹ năng khác thành SpeakingContent.
+- ResourceContentHandler là điểm mở rộng cho từng kỹ năng. Hiện có SpeakingContentHandler và WritingContentHandler; Reading/Listening bổ sung handler, kiểm tra JSON và liên kết riêng. API trả SKILL_NOT_SUPPORTED cho kỹ năng chưa có handler.
+- source/client/src/features/learning giữ kiểu generic, form giao bài và danh sách bài học viên; features/speaking/types.ts giữ SpeakingContent/Teaching và alias generic, cùng editor/preview/ngân hàng. Writing có kiểu riêng tại features/writing/types.ts. Preview học viên chọn theo skill.
 - API đọc/lưu lựa chọn/Attempt/Submission ở plan 6.4 triển khai trong module 3; hiện không tạo giả endpoint làm/nộp bài.
 - Mọi thành viên thống nhất số migration mới; không sửa V1/V2 sau khi Flyway đã áp dụng. Nên đưa nền chung vào PR sớm để các nhánh còn lại tích hợp.
 

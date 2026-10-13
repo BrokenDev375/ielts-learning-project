@@ -16,6 +16,7 @@ public interface LearningRepository {
     long createVersion(long id, int no, ResourceRequests.ResourceInput input);
     void updateVersion(long id, ResourceRequests.ResourceInput input);
     void links(long id, String skill, List<Long> assetIds, List<String> labelCodes);
+    void links(long id, String skill, List<Long> assetIds, List<Long> imageIds, List<String> labelCodes);
     void publish(long id, long teacher);
     List<LearningViews.Assignment> assignments(long actor, Role role);
     LearningViews.Assignment assignment(long id);
@@ -27,9 +28,11 @@ public interface LearningRepository {
     List<Long> classStudentIds(long id);
     long createAssignment(ResourceRequests.Assign input, long teacher, String fingerprint, List<Long> students);
     boolean ownedAudio(long id, long owner);
+    boolean ownedImage(long id, long owner);
     boolean assetVisible(long id, long actor, Role role);
     AssetEntity asset(long id);
     LearningViews.Asset storeAsset(long owner, String key, String name, String mime, long size, String sha);
     void lockUser(long owner);
     boolean existingSeed(long owner, String activity);
+    boolean existingSeed(long owner, String skill, String marker);
 }

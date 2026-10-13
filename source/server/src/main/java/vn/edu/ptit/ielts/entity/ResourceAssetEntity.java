@@ -7,5 +7,6 @@ public class ResourceAssetEntity {
     @MapsId("assetId") @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="asset_id") private AssetEntity asset;
     @Column(name="sort_order",nullable=false) private int sortOrder;
     protected ResourceAssetEntity(){}
-    public ResourceAssetEntity(ResourceVersionEntity version,AssetEntity asset){this.version=version;this.asset=asset;id=new ResourceAssetKey(version.getId(),asset.getId(),"MODEL_AUDIO");}
+    public ResourceAssetEntity(ResourceVersionEntity version,AssetEntity asset){this(version,asset,"MODEL_AUDIO");}
+    public ResourceAssetEntity(ResourceVersionEntity version,AssetEntity asset,String role){this.version=version;this.asset=asset;id=new ResourceAssetKey(version.getId(),asset.getId(),role);}
 }

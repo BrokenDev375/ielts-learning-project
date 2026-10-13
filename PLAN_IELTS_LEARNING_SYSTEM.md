@@ -1,6 +1,6 @@
 # Kế hoạch kiến trúc và các module: hệ thống hỗ trợ ôn luyện IELTS bằng AI
 
-Ngày lập: **08/10/2026**. Trạng thái: **đã khởi tạo dự án và triển khai module 1 Tài khoản và lớp học (M01/M02); module 2 đã có tạo/xuất bản/giao bài Speaking và nền quản lý tài liệu chung; các phần còn lại là kế hoạch thiết kế**.
+Ngày lập: **08/10/2026**. Trạng thái: **module 1 Tài khoản/lớp học (M01/M02) đã có; bản tích hợp có phần module 2 Soạn/xuất bản/giao học liệu Speaking và Writing (M03); làm/nộp bài và đánh giá vẫn là kế hoạch**.
 
 Cập nhật **09/10/2026**: profile chung, XP/cấp độ/huy hiệu/chuỗi ngày và Reading đã được bổ sung ở lần trước. Lần này cập nhật Listening: bốn nhãn mục tiêu, kiểm tra khó khăn sau test, nhóm luyện nghe–chép lời, hai loại video YouTube, transcript riêng và tiến trình theo từng đoạn; thêm bảng nguồn học liệu cho Reading/Listening và cách chuẩn bị seed.
 
@@ -8,7 +8,7 @@ Cập nhật **10/10/2026**: Speaking có đúng hai nhóm bổ trợ: **Phát t
 
 Cập nhật **11/10/2026**: Writing chấm **bài viết hoàn chỉnh** cho Task 1/Task 2, AI đề xuất theo rubric để giảng viên kiểm tra/chốt. Ghi rõ năm nhãn bổ trợ đã bàn và hai nhãn Task 2 còn là đề xuất; bổ sung bảng từ trước khi viết, sửa câu do giảng viên xác nhận lỗi, cách đưa rubric/bài mẫu vào AI, nguồn PDF/hoạt động demo và các phần seed cần biên soạn. IELTS Academic vẫn là giả định cần xác nhận.
 
-Cập nhật triển khai **11/10/2026**: dự án tại `ielts-learning-project/`, source chia `source/client`, `source/server`, `source/common` theo Instruction.md. Module 1 có đăng ký học viên, đăng nhập/đăng xuất/session, phân quyền, nhiều lớp, mã tham gia, chỉnh sửa lớp, xem/xóa thành viên và rời lớp. Database chính là **MySQL 8.4**, Flyway migration; có Docker Compose chạy database/server/client và `start.cmd` để khởi động. Đã kiểm tra 12 API test với MySQL riêng, 3 browser test và dữ liệu sau khi tạo lại container server/client; đây là kiểm tra chức năng, chưa phải benchmark/contribution. Chi tiết ở [README dự án](README.md) và [kết quả module 1](statics/results/module-1-validation.md).
+Cập nhật triển khai **11/10/2026**: dự án tại `ielts-learning-orm/`, source chia `source/client`, `source/server`, `source/common` theo Instruction.md. Module 1 có đăng ký học viên, đăng nhập/đăng xuất/session, phân quyền, nhiều lớp, mã tham gia, chỉnh sửa lớp, xem/xóa thành viên và rời lớp. Database chính là **MySQL 8.4**, Flyway migration; có Docker Compose chạy database/server/client và `start.cmd` để khởi động. Đã kiểm tra 12 API test với MySQL riêng, 3 browser test và dữ liệu sau khi tạo lại container server/client; đây là kiểm tra chức năng, chưa phải benchmark/contribution. Chi tiết ở [README dự án](README.md) và [kết quả module 1](statics/results/module-1-validation.md).
 
 Phần mạng vẫn theo hướng **HTTP/JSON + lưu dữ liệu + mở lại để tải dữ liệu đã lưu**. Tổ chức thành 9 module nghiệp vụ trong cùng ứng dụng. Tự reconnect, WebSocket, heartbeat, đồng bộ offline và tiếp tục tải tệp không thuộc phạm vi phiên bản đầu. Các công thức/tham số gamification dưới đây là cấu hình đề xuất, chưa phải mức thưởng đã chốt.
 
@@ -16,15 +16,15 @@ Cập nhật **12/10/2026**: câu hỏi bài chính/test Reading và Listening t
 
 Bổ sung cùng ngày: phân biệt mô hình database với JSON API tại 5.1, kế hoạch thiết kế database tiếp theo tại 5.2 và hợp đồng dữ liệu/API chung Reading–Listening tại 6.4. Đây là đặc tả cho các module tiếp theo, chưa phải endpoint hoặc schema mới đã triển khai.
 
-Cập nhật thiết kế database **12/10/2026**: đã có [DATABASE_DESIGN.md](DATABASE_DESIGN.md), ERD, từ điển cột/khóa và SQL tham chiếu cho 44 bảng chia theo giai đoạn. Schema đã chạy trên MySQL 8.4.9 và qua 39 kiểm tra dữ liệu/ràng buộc ở database thử riêng. Ứng dụng đã có V1 và V2 (13 bảng tài liệu/giao bài); V3–V6 triển khai tiếp bằng migration mới. Chi tiết tại mục 5.3.
+Cập nhật thiết kế database **12/10/2026**: đã có [DATABASE_DESIGN.md](DATABASE_DESIGN.md), ERD, từ điển cột/khóa và SQL tham chiếu cho 44 bảng chia theo giai đoạn. Schema đã chạy trên MySQL 8.4.9 và qua 39 kiểm tra dữ liệu/ràng buộc ở database thử riêng. Ở lần thiết kế 12/10, database ứng dụng là V1. Nhánh Writing ngày 13/10 đã có thêm V2 tài nguyên/giao bài; V3–V6 là kế hoạch. Chi tiết tại mục 5.3.
 
 Tên đề tài dự kiến: **Xây dựng hệ thống AI hỗ trợ đánh giá, xây dựng hồ sơ người học và phân phối bài luyện IELTS theo điểm yếu từng kỹ năng.**
 
 Tài liệu này là kế hoạch cho hướng ứng dụng mới. Những phần cần giảng viên xác nhận được ghi ở mục 12. Các con số về dữ liệu thử nghiệm là mục tiêu chuẩn bị, không phải kết quả đã đo.
 
-Cập nhật triển khai Speaking module 2: API tài liệu/phiên bản và giao bài dùng chung, handler riêng Speaking; giảng viên soạn/xem trước/xuất bản/giao ba dạng bài, học viên mở nội dung/audio được giao. Outline tham khảo và ghi chú riêng không cấp cho học viên. Có ba seed nháp và audio demo tổng hợp; chưa triển khai làm/nộp bài, AI hoặc profile. Xem [chi tiết](docs/SPEAKING_MODULE_2.md) và [kiểm tra](statics/results/speaking-module-2-validation.md).
-
 Cập nhật bản ORM 13/10/2026: thư mục ielts-learning-orm, lịch sử Git mới, module 1 dùng Spring Data JPA/Hibernate. Flyway quản lí schema, Hibernate validate mapping, open-in-view=false. Các kỹ năng triển khai trên nhánh riêng; stack được chốt trước khi thay đổi.
+
+Cập nhật Writing 13/10/2026: feature/writing bắt đầu từ main, có Task 1 Academic/Task 2, năm nhãn đã chốt, bước hướng dẫn/vận dụng, bảng từ, hình bảo vệ, nháp/preview/publish/version và giao cho lớp/nhóm học viên. V2 giữ nguyên với Speaking; bảy seed tự biên soạn để DRAFT, sửa ngữ pháp cần giảng viên xác nhận. Các đoạn nguồn trước đây ghi chưa tạo seed mô tả lần lập plan 11/10: hiện có seed demo tự biên soạn, chưa nhập toàn bộ PDF hoặc gán band kiểm chứng. Phần M09 viết/nộp bài hoàn chỉnh, AI/rubric, màn hình chấm và profile chưa triển khai. [Payload, nguồn, demo](docs/WRITING_MODULE_2.md); [kết quả kiểm thử](statics/results/module-2-writing-validation.md).
 
 ## 1. Mục tiêu và phạm vi
 
@@ -131,7 +131,7 @@ Có thể dùng dữ liệu AI giả lập để phát triển giao diện, như
 - Tệp audio/tài liệu được lưu ngoài bảng dữ liệu, tham chiếu bằng Asset và phiên bản.
 - Một server ứng dụng và một frontend; các module dưới đây là module trong ứng dụng, không phải từng microservice.
 - Bản khởi tạo dùng Java target 17/Spring Boot 3.5.16, React 19.3.0/TypeScript/Vite 8.3.4. Maven Wrapper và npm lockfile nằm trong source. Docker Compose có MySQL, server, client/Nginx, healthcheck và volume; `start.cmd` tạo .env local rồi build/chạy toàn bộ, cách chạy IDE vẫn có trong README. Docker không đổi việc phân chia vai trò/AI tại mục 2.3.
-- Cổng local của bản ORM: backend 8080, frontend 5173, MySQL IDE 3306; cấu hình được.
+- Cổng local đề xuất cho dự án mới: backend 8080, frontend 5173; cấu hình được.
 - Chọn phiên bản thư viện khi khởi tạo dự án và lưu lockfile. Không cần nâng cấp stack hiện có chỉ để viết kế hoạch này.
 
 ### 2.5. Phần mạng tối thiểu cần làm
@@ -1114,7 +1114,7 @@ Ví dụ: database có thể lưu câu hỏi và lựa chọn trong hai bảng Q
 3. Database module 1 đã có users, classrooms, class_members trong V1__accounts_and_classrooms.sql. Khi triển khai tiếp, giữ migration V1 đã áp dụng; thêm migration V2 trở đi theo phạm vi module. Ưu tiên ngân hàng tài liệu/giao bài trước, sau đó lần làm/nháp/bài nộp và phần kỹ năng.
 4. Sau khi thống nhất schema/API, chuẩn bị seed đúng định dạng, triển khai backend/frontend và kiểm tra tải/giao/lưu/nộp giữa các client.
 
-Thiết kế ở bước 1–2 đã được cụ thể hóa tại mục 5.3. Khi triển khai module tiếp theo, thực hiện migration/backend/frontend/seed theo bước 3–4; database đã có V1/V2 cho nền tài liệu/giao bài Speaking.
+Thiết kế ở bước 1–2 đã được cụ thể hóa tại mục 5.3. Khi triển khai module tiếp theo, thực hiện migration/backend/frontend/seed theo bước 3–4; nhánh Writing hiện đã chạy V1/V2; bước kế tiếp thêm migration mới.
 
 ### 5.3. Thiết kế database đã chuẩn bị
 
@@ -1428,7 +1428,7 @@ Các contribution trên còn là đề xuất. Phải phân biệt phần kế t
 - Đối với video người dùng cung cấp, cần lấy mốc mô tả/link PDF trước khi tạo seed. Hỗ trợ chia/ghép từ tài liệu có sẵn để giảm nhập tay, giảng viên duyệt ranh giới và lời thoại. Bảng nguồn M06.8/M07.7 là đầu mối tra cứu.
 - Có test đầu vào bốn kỹ năng, test định kỳ và các loại điểm/phạm vi phù hợp; chuẩn bị dữ liệu profile thiếu một kỹ năng để kiểm tra trạng thái thiếu dữ liệu.
 - Bài viết/bản ghi âm có nhận xét do giảng viên đủ chuyên môn đánh giá.
-- Writing: nguồn/worksheet tại M09.7 và mục 13.7; quy mô demo đề xuất M09.8 gồm một Task 1 biểu đồ số liệu, một Task 2 và năm nhóm hoạt động nhỏ. Bảng từ theo đề và câu lỗi/bản sửa cần giảng viên biên soạn/duyệt; chưa có seed nhập vào ứng dụng. Hai nhóm Task 2 đang đề xuất chưa chốt.
+- Writing: nguồn/worksheet tại M09.7 và mục 13.7; quy mô demo đề xuất M09.8 gồm một Task 1 biểu đồ số liệu, một Task 2 và năm nhóm hoạt động nhỏ. Cập nhật 13/10: đã có bảy seed DRAFT tự biên soạn, chart/CSV và phương án riêng, cần giảng viên duyệt; các worksheet/PDF nguồn chưa nhập và seed chưa có band kiểm chứng. Hai nhóm Task 2 đang đề xuất chưa chốt.
 - Bài tham chiếu IELTS có đề/bài làm/band/nhận xét được lưu đúng phạm vi; giữ một bộ bài mới được giảng viên đánh giá để đối chiếu AI, không dùng lại chính ví dụ đã gửi trong prompt làm phép đo chất lượng.
 - Speaking chuẩn bị hai nhóm bổ trợ và ghi chú giảng viên trên profile. Ngân hàng tham chiếu outline có nhiều câu trả lời hợp lệ, từ khóa/cụm và mẫu thiếu ý kèm nhận xét đã duyệt; mẫu tự biên soạn M08.4 chưa là dữ liệu chuyên môn được duyệt.
 - Bài phát âm có âm mục tiêu, từ/câu, phiên âm/audio mẫu được kiểm tra. Nếu chọn công cụ chấm, chuẩn bị bản thu có nhận xét người chấm để đối chiếu ngưỡng; dùng model có sẵn, không đưa huấn luyện model vào scope.
@@ -1528,7 +1528,7 @@ Hạn trong [Submission.md](docs/course/Submission.md): **23:59 ngày 31/10/2026
 
 ### 11.1. Cấu trúc dự án đã khởi tạo
 
-    ielts-learning-project/
+    ielts-learning-orm/
       README.md
       PLAN_IELTS_LEARNING_SYSTEM.md
       DATABASE_DESIGN.md
@@ -1569,7 +1569,7 @@ Hạn trong [Submission.md](docs/course/Submission.md): **23:59 ngày 31/10/2026
         common/
           API.md
 
-Cấu trúc bám mục 12 Instruction.md, dùng sơ đồ Mermaid có thể xuất ảnh khi làm báo cáo. Module 1 và phần tạo/giao bài Speaking của module 2 đã có code; các kỹ năng khác và module 3–9 bổ sung theo trách nhiệm. MySQL là database chính, truy cập qua JPA/Hibernate; Flyway hiện có V1/V2; audio lưu ở volume riêng. Hướng dẫn build/run/test, database setup, các giới hạn và nguồn thư viện nằm ở README dự án.
+Cấu trúc bám mục 12 Instruction.md, dùng sơ đồ Mermaid có thể xuất ảnh khi làm báo cáo. Module 1 và phần module 2 học liệu/giao bài Writing đã triển khai; các phần làm/nộp bài, đánh giá và module sau sẽ bổ sung theo trách nhiệm. MySQL là database chính, tài khoản/lớp/thành viên lưu qua JPA/Hibernate và Flyway. Hướng dẫn build/run/test, database setup, các giới hạn và nguồn thư viện nằm ở README dự án.
 
 ### 11.2. Checklist prototype chạy được
 
@@ -1677,7 +1677,7 @@ Các nguồn dưới đây dùng để xác định cấu trúc bài, tham khả
 - [MDN — HTMLMediaElement.currentTime](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/currentTime): điều khiển vị trí phát nguồn media riêng của ứng dụng.
 - [MDN — MediaRecorder](https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder): ghi âm trên trình duyệt.
 - [H2 — Features](https://www.h2database.com/html/features.html): phương án embedded/persistent đã tham khảo khi lập plan; bản triển khai hiện dùng MySQL.
-- [MySQL — What is MySQL](https://dev.mysql.com/doc/refman/8.4/en/what-is-mysql.html), [MySQL Connector/J](https://dev.mysql.com/doc/connector-j/en/): database quan hệ và driver JDBC bên dưới Hibernate.
+- [MySQL — What is MySQL](https://dev.mysql.com/doc/refman/8.4/en/what-is-mysql.html), [MySQL Connector/J](https://dev.mysql.com/doc/connector-j/en/): database quan hệ và JDBC của bản triển khai.
 - [Docker Compose — Startup order](https://docs.docker.com/compose/how-tos/startup-order/): healthcheck/depends_on cho MySQL → server → client.
 
 ### 13.5. Công cụ đã tham khảo cho việc chuẩn bị tài liệu
@@ -1728,3 +1728,5 @@ Danh sách nguồn cập nhật **11/10/2026**; bảng M09.7 ghi hoạt động,
 Không tải/nhập PDF, gọi API, tạo seed hoặc đo độ chính xác AI trong lần cập nhật này. Dữ liệu số/câu tự biên soạn ở M09.6 chỉ là ví dụ thiết kế; bài mẫu công khai là nguồn tham khảo. Học liệu phát cho học sinh và dữ liệu đối chiếu chuyên môn cần kiểm tra/duyệt phù hợp trước khi sử dụng.
 
 Cập nhật cấu trúc backend 13/10/2026: service/repository tự viết tách interface và implementation trong các package impl trên main, feature/speaking và feature/writing. Controller/bootstrap inject interface, @Transactional giữ trên implementation; Spring Data tự tạo implementation cho các *JpaRepository. Schema/API/stack giữ nguyên. Chi tiết ở docs/BACKEND_STRUCTURE.md.
+
+Cập nhật hợp nhất 13/10/2026: Writing đã vào main, feature/speaking đã merge main và ghép nền chung. Cả hai handler hoạt động trên V2 nguyên checksum, các DTO kỹ năng frontend tách riêng trên kiểu generic chung. Giảng viên có hai ngân hàng, học viên xem chung bài được giao và lọc Speaking/Writing. Tổng seed 10 (3 Speaking + 7 Writing), vẫn là học liệu demo cần duyệt; các chức năng làm/nộp/chấm AI chưa triển khai.

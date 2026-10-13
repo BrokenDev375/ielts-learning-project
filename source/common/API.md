@@ -1,4 +1,4 @@
-# HTTP API và message format — module 1 và Speaking module 2
+# HTTP API và message format — module 1 và module 2 Speaking/Writing
 
 Base path /api, request/response JSON UTF-8. Các thao tác thành công dùng HTTP 200/201/204; lỗi 400/401/403/404/409/503/500. ID tài nguyên lấy từ response, không tin vai trò hoặc ID người dùng tự khai trong body.
 
@@ -88,49 +88,50 @@ Bản ORM dùng Spring Data JPA/Hibernate. Service tạo lớp khóa hàng tài 
 
 Không trả SQL, password hoặc stacktrace về client. Backend log phục vụ debug; frontend hiển thị thông báo dễ hiểu và giữ form chưa xác nhận. Connection HTTP/TCP được framework quản lý; đóng tab không xóa thành viên lớp.
 
+## Học liệu và bài giao — V2
 
-## Module 2 — tài liệu, phiên bản và giao bài Speaking
+Mutation cần giảng viên và CSRF. Bản tích hợp đăng ký handler SPEAKING và WRITING; các kỹ năng chưa có handler trả SKILL_NOT_SUPPORTED.
 
-Tất cả endpoint cần session. Mutation cần CSRF; upload dùng multipart/form-data thay JSON. Chi tiết schema nội dung ở [Speaking module 2](../../docs/SPEAKING_MODULE_2.md).
+| Method / path | Request | Response / quyền |
+|---|---|---|
+| GET /resources?skill=WRITING | — | Resource[] thuộc giảng viên, mỗi resource có version mới nhất |
+| POST /resources | ResourceInput | 201 Resource, phiên bản 1 DRAFT |
+| PUT /resources/{id}/draft | ResourceInput | 200 Resource; cập nhật nháp hoặc tạo nháp phiên bản mới từ bản đã xuất bản |
+| GET /resources/{id}/versions | — | Version[] mới đến cũ; chỉ chủ sở hữu |
+| POST /resources/{id}/versions/{versionId}/publish | — | 200 Version sau kiểm tra điều kiện xuất bản |
+| POST /assets/images | multipart file | 201 Asset; PNG/JPEG tối đa 5 MiB, tối đa 12 triệu pixel |
+| POST /assets | multipart file | 201 Asset audio; upload audio cho Speaking |
+| GET /assets/{id} | tùy chọn Range | 200/206 byte tệp; chủ tệp hoặc người nhận bài đang có quyền |
+| GET /assignments | — | Assignment[] của chủ lớp hoặc người nhận đang thuộc lớp |
+| POST /assignments | Assign | 201 tạo mới; 200 phát lại requestId cùng nội dung |
+| GET /assignments/{id} | — | AssignedDetail đúng phiên bản; teaching chỉ cho giảng viên, questions=[] cho Speaking/Writing |
 
-| Method/path | Quyền và kết quả |
-|---|---|
-| GET /api/resources?skill=SPEAKING | Giảng viên: bài của mình, mỗi bài có version gần nhất |
-| POST /api/resources | Giảng viên: ResourceInput; 201 Resource {id,skill,version} |
-| GET /api/resources/{id} | Chủ bài: phiên bản gần nhất |
-| GET /api/resources/{id}/versions | Chủ bài: Version[] mới trước |
-| PUT /api/resources/{id}/draft | Chủ bài: ResourceInput; lưu nháp hoặc tạo nháp mới từ bài đã xuất bản |
-| POST /api/resources/{id}/versions/{versionId}/publish | Chủ bài: kiểm tra rồi xuất bản; gọi lại phiên bản đã xuất bản giữ nguyên |
-| POST /api/assets | Giảng viên: multipart file WAV/MP3/OGG tối đa 5 MiB; 201 {id,originalName,mimeType,sizeBytes,url} |
-| GET /api/assets/{id} | Chủ audio hoặc học viên nhận bài đang mở/còn trong lớp; hỗ trợ Range 206 |
-| POST /api/assignments | Chủ lớp và bài: Assign; 201 lần đầu, 200 phát lại cùng UUID/nội dung |
-| GET /api/assignments | Giảng viên: bài đã giao; học viên: bài được nhận và còn thuộc lớp |
-| GET /api/assignments/{id} | AssignedDetail theo format chung plan 6.4; học viên chỉ đọc đúng người nhận, sau thời gian mở |
+Đường dẫn tính từ /api. Asset response: id, originalName, mimeType, sizeBytes, url. MIME kiểm tra từ tệp thực; SVG/tệp hỏng bị từ chối. Không lộ storageKey/đường dẫn trên máy chủ.
 
-ResourceInput gồm title, skill, resourceKind, activityType, topic, levelFramework (nullable), levelLabel, supportLevel, content, teaching, source. Version có thêm id/resourceId/versionNo/status/publishedAt. student DTO bỏ teaching, giữ content/source; không được dùng endpoint ngân hàng để lấy tài liệu ngoài assignment.
+Resource/Version/AssignedDetail và payload Writing: [WRITING_MODULE_2.md](../../docs/WRITING_MODULE_2.md), [kiểu dùng chung](../client/src/features/learning/types.ts), [WritingPayloads](../server/src/main/java/vn/edu/ptit/ielts/dto/WritingPayloads.java). Response học viên loại toàn bộ teaching; content.activities[].example là ví dụ được chủ ý cấp trong bước hướng dẫn.
 
-Assign body minh họa:
+Assign:
 
     {
-      "requestId": "7f85f4ca-a0a2-40e3-9b0f-3934692a582f",
+      "requestId": "c47bb745-c617-4d69-a4f0-945b008f0013",
       "classroomId": 1,
-      "resourceVersionId": 2,
+      "resourceVersionId": 12,
       "purpose": "PRACTICE",
       "recipientMode": "CLASS_SNAPSHOT",
       "studentIds": [],
       "opensAt": null,
-      "dueAt": "2026-10-30T16:00:00Z",
+      "dueAt": null,
       "allowLate": false,
       "maxAttempts": 1,
-      "feedbackPolicy": "TEACHER_RELEASE"
+      "feedbackPolicy": "AFTER_SUBMISSION"
     }
 
-ID và ngày trên là ví dụ format. SELECTED cần studentIds thuộc lớp. purpose của bài bổ trợ là REMEDIAL. Payload không chứa teacherId/studentId tự khai thay cho session.
+ID minh họa format. SELECTED cần studentIds thuộc lớp; CLASS_SNAPSHOT chốt thành viên hiện tại, người tham gia sau không tự nhận bài. REMEDIAL dùng purpose=REMEDIAL; MAIN dùng PRACTICE/TEST_INITIAL/TEST_PERIODIC/RECHECK. Thời điểm ISO-8601 UTC, dueAt không trước opensAt.
 
-AssignedDetail trả assignmentId, resourceId, resourceVersionId, skill, title, dueAt, content, questions (rỗng với Speaking); thêm metadata phiên bản và assignment cho thông tin lớp/điều kiện. Giữ format chung đã chốt tại plan 6.4. Teaching chỉ có trong response giảng viên.
+Server khóa lớp khi giao; requestId duy nhất theo lớp chống ghi trùng. Phát lại cùng payload trả assignment cũ; khác payload trả 409 REQUEST_ID_REUSED. Frontend giữ requestId khi thử lại form chưa đổi nội dung. Nháp tài nguyên/upload chưa có idempotency key; không tự retry mutation khi timeout, ngoài trường hợp CSRF bị chặn trước xử lý.
 
-AssignmentView gồm id, classroomId/classroomName, resourceVersionId, title, skill, purpose/status, opensAt/dueAt, allowLate, maxAttempts, feedbackPolicy, recipientCount, createdAt. Các mốc thời gian response là ISO-8601 UTC.
+opensAt được thực thi khi học viên tải bài/hình. dueAt/maxAttempts/allowLate/feedbackPolicy là cấu hình cho module 3; chưa có API bài làm/nộp hoặc mở phản hồi. Rời/xóa khỏi lớp chặn quyền hiện tại, giữ assignment_recipients. Bài đã giao giữ resourceVersionId khi xuất bản phiên bản mới.
 
-Lỗi bổ sung: INVALID_RESOURCE, INVALID_ASSET, INVALID_AUDIO (400); AUDIO_TOO_LARGE (413); RESOURCE_NOT_PUBLISHED/INVALID_RECIPIENTS/INVALID_DATES/INVALID_PURPOSE (400); ASSIGNMENT_NOT_OPEN/FORBIDDEN (403); REQUEST_ID_REUSED (409). Kỹ năng chưa có ResourceContentHandler trả SKILL_NOT_SUPPORTED (400).
+Lỗi vẫn dùng ApiError; Writing thêm INVALID_WRITING, INVALID_IMAGE, IMAGE_TOO_LARGE (413). Nginx giới hạn multipart 6 MiB, Spring file 5 MiB. Không cấp hình qua URL static public.
 
-Assignment giữ phiên bản và người nhận cố định, UUID/fingerprint chống ghi trùng. Ngân hàng tạo bài bằng POST hiện chưa có idempotency key; sau timeout nên tải lại để kiểm tra trước khi tạo lại. Endpoint Attempt/nháp/Submission/AI theo plan triển khai ở module sau.
+Speaking schema: [SPEAKING_MODULE_2.md](../../docs/SPEAKING_MODULE_2.md), [kiểu frontend Speaking](../client/src/features/speaking/types.ts). Content có taskType/part/prompt/instructions/preparationSeconds/speakingSeconds/checklist/phonemes/items/assessmentCriteria; teaching có outlineExamples/teacherNotes chỉ dành cho giảng viên. Item có text/ipa/audioAssetId. GET /resources?skill=SPEAKING dùng cùng quyền và version flow; student GET /assignments trả cả hai kỹ năng được cấp, client chọn preview theo skill.
