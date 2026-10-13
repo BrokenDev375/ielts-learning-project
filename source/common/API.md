@@ -1,4 +1,4 @@
-# HTTP API và message format — module 1
+# HTTP API và message format — module 1 và Speaking module 2
 
 Base path /api, request/response JSON UTF-8. Các thao tác thành công dùng HTTP 200/201/204; lỗi 400/401/403/404/409/503/500. ID tài nguyên lấy từ response, không tin vai trò hoặc ID người dùng tự khai trong body.
 
@@ -87,3 +87,50 @@ Bản ORM dùng Spring Data JPA/Hibernate. Service tạo lớp khóa hàng tài 
 400: JSON/field/ID/code sai; 401: chưa đăng nhập/sai mật khẩu; 403: CSRF hoặc trái quyền; 404: không có lớp/mã; 409: email/requestId trùng với nội dung không phù hợp; 503: database chưa sẵn sàng.
 
 Không trả SQL, password hoặc stacktrace về client. Backend log phục vụ debug; frontend hiển thị thông báo dễ hiểu và giữ form chưa xác nhận. Connection HTTP/TCP được framework quản lý; đóng tab không xóa thành viên lớp.
+
+
+## Module 2 — tài liệu, phiên bản và giao bài Speaking
+
+Tất cả endpoint cần session. Mutation cần CSRF; upload dùng multipart/form-data thay JSON. Chi tiết schema nội dung ở [Speaking module 2](../../docs/SPEAKING_MODULE_2.md).
+
+| Method/path | Quyền và kết quả |
+|---|---|
+| GET /api/resources?skill=SPEAKING | Giảng viên: bài của mình, mỗi bài có version gần nhất |
+| POST /api/resources | Giảng viên: ResourceInput; 201 Resource {id,skill,version} |
+| GET /api/resources/{id} | Chủ bài: phiên bản gần nhất |
+| GET /api/resources/{id}/versions | Chủ bài: Version[] mới trước |
+| PUT /api/resources/{id}/draft | Chủ bài: ResourceInput; lưu nháp hoặc tạo nháp mới từ bài đã xuất bản |
+| POST /api/resources/{id}/versions/{versionId}/publish | Chủ bài: kiểm tra rồi xuất bản; gọi lại phiên bản đã xuất bản giữ nguyên |
+| POST /api/assets | Giảng viên: multipart file WAV/MP3/OGG tối đa 5 MiB; 201 {id,originalName,mimeType,sizeBytes,url} |
+| GET /api/assets/{id} | Chủ audio hoặc học viên nhận bài đang mở/còn trong lớp; hỗ trợ Range 206 |
+| POST /api/assignments | Chủ lớp và bài: Assign; 201 lần đầu, 200 phát lại cùng UUID/nội dung |
+| GET /api/assignments | Giảng viên: bài đã giao; học viên: bài được nhận và còn thuộc lớp |
+| GET /api/assignments/{id} | AssignedDetail theo format chung plan 6.4; học viên chỉ đọc đúng người nhận, sau thời gian mở |
+
+ResourceInput gồm title, skill, resourceKind, activityType, topic, levelFramework (nullable), levelLabel, supportLevel, content, teaching, source. Version có thêm id/resourceId/versionNo/status/publishedAt. student DTO bỏ teaching, giữ content/source; không được dùng endpoint ngân hàng để lấy tài liệu ngoài assignment.
+
+Assign body minh họa:
+
+    {
+      "requestId": "7f85f4ca-a0a2-40e3-9b0f-3934692a582f",
+      "classroomId": 1,
+      "resourceVersionId": 2,
+      "purpose": "PRACTICE",
+      "recipientMode": "CLASS_SNAPSHOT",
+      "studentIds": [],
+      "opensAt": null,
+      "dueAt": "2026-10-30T16:00:00Z",
+      "allowLate": false,
+      "maxAttempts": 1,
+      "feedbackPolicy": "TEACHER_RELEASE"
+    }
+
+ID và ngày trên là ví dụ format. SELECTED cần studentIds thuộc lớp. purpose của bài bổ trợ là REMEDIAL. Payload không chứa teacherId/studentId tự khai thay cho session.
+
+AssignedDetail trả assignmentId, resourceId, resourceVersionId, skill, title, dueAt, content, questions (rỗng với Speaking); thêm metadata phiên bản và assignment cho thông tin lớp/điều kiện. Giữ format chung đã chốt tại plan 6.4. Teaching chỉ có trong response giảng viên.
+
+AssignmentView gồm id, classroomId/classroomName, resourceVersionId, title, skill, purpose/status, opensAt/dueAt, allowLate, maxAttempts, feedbackPolicy, recipientCount, createdAt. Các mốc thời gian response là ISO-8601 UTC.
+
+Lỗi bổ sung: INVALID_RESOURCE, INVALID_ASSET, INVALID_AUDIO (400); AUDIO_TOO_LARGE (413); RESOURCE_NOT_PUBLISHED/INVALID_RECIPIENTS/INVALID_DATES/INVALID_PURPOSE (400); ASSIGNMENT_NOT_OPEN/FORBIDDEN (403); REQUEST_ID_REUSED (409). Kỹ năng chưa có ResourceContentHandler trả SKILL_NOT_SUPPORTED (400).
+
+Assignment giữ phiên bản và người nhận cố định, UUID/fingerprint chống ghi trùng. Ngân hàng tạo bài bằng POST hiện chưa có idempotency key; sau timeout nên tải lại để kiểm tra trước khi tạo lại. Endpoint Attempt/nháp/Submission/AI theo plan triển khai ở module sau.

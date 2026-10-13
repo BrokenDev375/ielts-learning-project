@@ -2,7 +2,7 @@
 
 Ngày thiết kế: **12/10/2026**. Database: **MySQL 8.4 / InnoDB / UTF-8**. Thiết kế bám [plan](PLAN_IELTS_LEARNING_SYSTEM.md), giữ schema tài khoản/lớp đã có và dữ liệu/API Reading–Listening tại mục 6.4.
 
-Thiết kế tổng thể có **44 bảng**, chia theo giai đoạn. Phiên bản ứng dụng hiện tại đã triển khai 3 bảng V1; các nhóm V2–V6 là thiết kế để triển khai lần lượt. SQL tham chiếu được đặt trong docs/database để phục vụ review/kiểm tra.
+Thiết kế tổng thể có **44 bảng**, chia theo giai đoạn. Ứng dụng đã triển khai 3 bảng V1 và 13 bảng V2 qua Flyway, phục vụ ngân hàng/giao bài Speaking. V3–V6 tiếp tục là thiết kế. Bảng câu hỏi/nguồn nghe đã có, API nội dung Reading/Listening sẽ bổ sung theo kỹ năng. SQL tham chiếu được đặt trong docs/database để phục vụ review/kiểm tra.
 
 ## Tài liệu sử dụng khi chia việc
 
@@ -17,12 +17,12 @@ Thiết kế tổng thể có **44 bảng**, chia theo giai đoạn. Phiên bả
 
 ## 1. Thứ tự triển khai
 
-V2–V6 là cách nhóm các phần thiết kế, không phải migration đã chạy. Khi triển khai có thể tách thành các file Flyway nhỏ hơn theo phụ thuộc.
+V2 đã có migration V2__resources_and_assignments.sql, giữ nguyên V1. V3–V6 là các nhóm thiết kế tiếp theo; các thành viên thống nhất số migration trước khi thêm file.
 
 | Giai đoạn | Số bảng | Phần việc |
 |---|---:|---|
 | V1 — đã có | 3 | users, classrooms, class_members |
-| V2 — làm tiếp | 13 | assets, nhãn, resources/versions, câu hỏi/lựa chọn, nguồn nghe/đoạn/transcript, assignments/recipients |
+| V2 — đã tạo bảng | 13 | assets, nhãn, resources/versions, câu hỏi/lựa chọn, nguồn nghe/đoạn/transcript, assignments/recipients |
 | V3 | 9 | lần làm, nháp, lựa chọn, tiến trình/nộp đoạn, bài nộp, lựa chọn/tệp lúc nộp, review |
 | V4 | 4 | rubric, outline Speaking, kết quả AI/công cụ, đánh giá giảng viên |
 | V5 | 9 | đợt test, điểm kỹ năng, profile chung/lịch sử, nhu cầu và gợi ý bổ trợ |

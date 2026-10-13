@@ -3,7 +3,7 @@ services:
   mysql:
     image: mysql:8.4
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-ielts_learning}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-ielts_learning_orm}
       MYSQL_USER: ${MYSQL_USER:-ielts_app}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Create .env from .env.example first}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Create .env from .env.example first}
@@ -20,7 +20,7 @@ services:
   server:
     build: ./source/server
     environment:
-      DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-ielts_learning}?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&useUnicode=true&characterEncoding=UTF-8
+      DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-ielts_learning_orm}?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&useUnicode=true&characterEncoding=UTF-8
       SERVER_PORT: 8080
       DB_USERNAME: ${MYSQL_USER:-ielts_app}
       DB_PASSWORD: ${MYSQL_PASSWORD}
@@ -29,7 +29,10 @@ services:
       DEMO_TEACHER_PASSWORD: ${DEMO_TEACHER_PASSWORD:-}
       DEMO_STUDENT_EMAIL: ${DEMO_STUDENT_EMAIL:-student@ielts.local}
       DEMO_STUDENT_PASSWORD: ${DEMO_STUDENT_PASSWORD:-}
+      ASSET_DIRECTORY: /app/data/assets
       SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-false}
+    volumes:
+      - asset_data:/app/data/assets
     depends_on:
       mysql:
         condition: service_healthy
@@ -52,3 +55,4 @@ services:
     restart: unless-stopped
 volumes:
   mysql_data:
+  asset_data:

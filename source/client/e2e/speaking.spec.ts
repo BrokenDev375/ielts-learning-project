@@ -1,0 +1,112 @@
+import { test, expect } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import path from 'node:path';
+
+async function login(page: Page, teacher: boolean) {
+  await page.goto('/');
+  await page.getByLabel('Email', { exact: true }).fill(teacher ? 'teacher@ielts.local' : 'student@ielts.local');
+  await page.getByLabel('Mật khẩu', { exact: true }).fill(teacher ? 'Teacher@12345' : 'Student@12345');
+  await page.getByRole('button', { name: 'Đăng nhập', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Lớp học của tôi.' })).toBeVisible();
+}
+async function post(page: Page, url: string, data: unknown) {
+  const csrf = await (await page.request.get('/api/auth/csrf')).json();
+  const result = await page.request.post(url, { data, headers: { [csrf.headerName]: csrf.token } });
+  expect(result.ok()).toBeTruthy();
+  return result.json();
+}
+async function fixture(teacher: Page, student: Page) {
+  const room = await post(teacher, '/api/classes', { name: 'Speaking E2E ' + Date.now(), description: '', requestId: crypto.randomUUID() });
+  await post(student, '/api/classes/join', { code: room.joinCode });
+  await teacher.reload();
+  return room;
+}
+test('teacher authors, previews, publishes and assigns; student keeps original version after a new publication', async ({ browser }) => {
+  const tc = await browser.newContext(), sc = await browser.newContext();
+  const teacher = await tc.newPage(), student = await sc.newPage();
+  await login(teacher, true); await login(student, false);
+  const room = await fixture(teacher, student), title = 'A special hobby ' + Date.now();
+  await teacher.getByRole('button', { name: 'Bài Speaking', exact: true }).click();
+  await teacher.getByRole('button', { name: 'Tạo bài Speaking', exact: true }).click();
+  await teacher.getByLabel('Tên bài', { exact: true }).fill(title);
+  await teacher.getByLabel('Đề bài / tình huống').fill('Describe a hobby and explain why you enjoy it.');
+  await teacher.getByLabel('Ghi chú riêng của giảng viên').fill('TEACHER_ONLY_BROWSER_NOTE');
+  await teacher.getByRole('button', { name: 'Lưu bản nháp' }).click();
+  const card = teacher.locator('.learning-card').filter({ has: teacher.getByRole('heading', { name: title, exact: true }) });
+  await expect(card).toContainText('Bản nháp');
+  await card.getByRole('button', { name: 'Xem trước' }).click();
+  await expect(teacher.getByText('Describe a hobby and explain why you enjoy it.', { exact: true })).toBeVisible();
+  await teacher.getByRole('button', { name: 'Quay lại', exact: true }).click();
+  await card.getByRole('button', { name: 'Xuất bản', exact: true }).click();
+  await expect(card).toContainText('Đã xuất bản');
+  await card.getByRole('button', { name: 'Giao bài', exact: true }).click();
+  await teacher.getByLabel('Lớp nhận bài').selectOption(String(room.id));
+  await teacher.getByRole('button', { name: 'Xác nhận giao bài' }).click();
+  await expect(teacher.getByRole('status')).toContainText('Đã giao bài');
+  await student.getByRole('button', { name: 'Bài được giao', exact: true }).click();
+  const studentCard = student.locator('.learning-card').filter({ has: student.getByRole('heading', { name: title, exact: true }) });
+  await studentCard.getByRole('button', { name: 'Xem đề bài' }).click();
+  await expect(student.getByText('Describe a hobby and explain why you enjoy it.', { exact: true })).toBeVisible();
+  await expect(student.getByText('TEACHER_ONLY_BROWSER_NOTE')).toHaveCount(0);
+  await teacher.getByRole('button', { name: 'Ngân hàng bài', exact: true }).click();
+  await card.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
+  await teacher.getByLabel('Tên bài', { exact: true }).fill(title + ' revised');
+  await teacher.getByLabel('Đề bài / tình huống').fill('NEW_PROMPT_VERSION_TWO');
+  await teacher.getByRole('button', { name: 'Lưu bản nháp' }).click();
+  const revised = teacher.locator('.learning-card').filter({ has: teacher.getByRole('heading', { name: title + ' revised', exact: true }) });
+  await expect(revised).toContainText('Phiên bản 2');
+  await revised.getByRole('button', { name: 'Xuất bản' }).click();
+  await student.reload();
+  await student.getByRole('button', { name: 'Bài được giao', exact: true }).click();
+  await studentCard.getByRole('button', { name: 'Xem đề bài' }).click();
+  await expect(student.getByText('Describe a hobby and explain why you enjoy it.', { exact: true })).toBeVisible();
+  await expect(student.getByText('NEW_PROMPT_VERSION_TWO')).toHaveCount(0);
+  await teacher.getByRole('button', { name: 'Bài Speaking', exact: true }).click();
+  await revised.getByRole('button', { name: 'Xem trước' }).click();
+  await teacher.screenshot({ path: 'test-results/speaking-teacher-desktop.png', fullPage: true });
+  await tc.close(); await sc.close();
+});
+test('pronunciation upload, selected recipient and actual audio playback', async ({ browser }) => {
+  const tc = await browser.newContext(), sc = await browser.newContext();
+  const teacher = await tc.newPage(), student = await sc.newPage();
+  await login(teacher, true); await login(student, false);
+  const room = await fixture(teacher, student), title = 'Theta words ' + Date.now();
+  await teacher.getByRole('button', { name: 'Bài Speaking', exact: true }).click();
+  await teacher.getByRole('button', { name: 'Tạo bài Speaking', exact: true }).click();
+  await teacher.getByLabel('Tên bài', { exact: true }).fill(title);
+  await teacher.getByRole('combobox', { name: 'Dạng bài', exact: true }).selectOption('PRONUNCIATION');
+  await teacher.getByLabel('Đề bài / tình huống').fill('Practice the sound /θ/.');
+  await teacher.getByLabel('Âm mục tiêu').fill('/θ/');
+  await teacher.getByRole('button', { name: 'Thêm từ / câu' }).click();
+  await teacher.getByLabel('Nội dung từ / câu').fill('I think three friends will arrive on Thursday.');
+  await teacher.getByLabel('Phiên âm', { exact: true }).fill('/θ/');
+  await teacher.getByLabel('Audio mẫu').setInputFiles(path.resolve('../server/src/main/resources/demo/speaking-theta.wav'));
+  await expect(teacher.locator('audio')).toHaveAttribute('src', /\/api\/assets\/\d+/);
+  await teacher.getByRole('button', { name: 'Lưu bản nháp' }).click();
+  const card = teacher.locator('.learning-card').filter({ has: teacher.getByRole('heading', { name: title, exact: true }) });
+  await card.getByRole('button', { name: 'Xuất bản' }).click();
+  await card.getByRole('button', { name: 'Giao bài', exact: true }).click();
+  await teacher.getByLabel('Lớp nhận bài').selectOption(String(room.id));
+  await teacher.getByRole('combobox', { name: 'Người nhận', exact: true }).selectOption('SELECTED');
+  await teacher.getByRole('checkbox', { name: /Trần Hoàng Nam/ }).check();
+  await teacher.getByRole('button', { name: 'Xác nhận giao bài' }).click();
+  await expect(teacher.getByRole('status')).toContainText('Đã giao bài');
+  await student.getByRole('button', { name: 'Bài được giao', exact: true }).click();
+  await student.locator('.learning-card').filter({ has: student.getByRole('heading', { name: title, exact: true }) }).getByRole('button', { name: 'Xem đề bài' }).click();
+  await student.locator('audio').evaluate((audio: HTMLAudioElement) => audio.load());
+  await expect.poll(() => student.locator('audio').evaluate((audio: HTMLAudioElement) => audio.readyState)).toBeGreaterThanOrEqual(2);
+  await student.screenshot({ path: 'test-results/speaking-student-audio.png', fullPage: true });
+  await tc.close(); await sc.close();
+});
+test('mobile speaking bank and pronunciation editor fit the screen', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await login(page, true);
+  await page.getByRole('button', { name: 'Bài Speaking', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Bài Speaking.' })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
+  await page.screenshot({ path: 'test-results/speaking-mobile-bank.png', fullPage: true });
+  await page.getByRole('button', { name: 'Tạo bài Speaking', exact: true }).click();
+  await page.getByRole('combobox', { name: 'Dạng bài', exact: true }).selectOption('PRONUNCIATION');
+  await page.getByRole('button', { name: 'Thêm từ / câu' }).click();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
+});

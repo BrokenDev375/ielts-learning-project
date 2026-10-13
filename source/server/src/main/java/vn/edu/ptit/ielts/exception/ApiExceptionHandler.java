@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import vn.edu.ptit.ielts.dto.ApiError;
 
 @RestControllerAdvice
@@ -44,6 +45,10 @@ public class ApiExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     ResponseEntity<ApiError> conflict() {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError("DATA_CONFLICT", "Dữ liệu đã thay đổi hoặc bị trùng. Vui lòng tải lại."));
+    }
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    ResponseEntity<ApiError> uploadTooLarge() {
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(new ApiError("AUDIO_TOO_LARGE", "Audio cần nhỏ hơn hoặc bằng 5 MB."));
     }
     @ExceptionHandler(DataAccessException.class)
     ResponseEntity<ApiError> database(DataAccessException ex) {
