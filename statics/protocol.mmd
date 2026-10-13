@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant T as Client giảng viên
+    participant A as Server API
+    participant DB as MySQL
+    participant S as Client học viên
+    T->>A: GET /auth/csrf
+    A-->>T: CSRF token + session cookie
+    T->>A: POST /auth/login + token
+    A->>DB: Xác thực tài khoản
+    A-->>T: UserView + session ID mới
+    T->>A: GET /auth/csrf
+    T->>A: POST /classes + requestId + token
+    A->>DB: Transaction, kiểm tra unique
+    A-->>T: Lớp + mã tham gia
+    S->>A: Đăng nhập / lấy CSRF
+    S->>A: POST /classes/join + code
+    A->>DB: Kiểm tra role, tạo membership nếu chưa có
+    A-->>S: Lớp + alreadyJoined
+    T->>A: GET /classes/id/members
+    A->>DB: Kiểm tra chủ sở hữu, đọc roster
+    A-->>T: Danh sách học viên

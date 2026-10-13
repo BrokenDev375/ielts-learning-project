@@ -1,0 +1,40 @@
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    session:
+      timeout: 8h
+      cookie:
+        http-only: true
+        same-site: lax
+        secure: ${SESSION_COOKIE_SECURE:false}
+spring:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  application:
+    name: ielts-learning-server
+  datasource:
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/ielts_learning_orm?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&useUnicode=true&characterEncoding=UTF-8}
+    username: ${DB_USERNAME:ielts_app}
+    password: ${DB_PASSWORD:local-app-change-me}
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 10000
+  flyway:
+    enabled: true
+  jackson:
+    time-zone: UTC
+    deserialization:
+      fail-on-unknown-properties: true
+app:
+  demo:
+    enabled: ${DEMO_ENABLED:false}
+    teacher-email: ${DEMO_TEACHER_EMAIL:teacher@ielts.local}
+    teacher-password: ${DEMO_TEACHER_PASSWORD:}
+    student-email: ${DEMO_STUDENT_EMAIL:student@ielts.local}
+    student-password: ${DEMO_STUDENT_PASSWORD:}
