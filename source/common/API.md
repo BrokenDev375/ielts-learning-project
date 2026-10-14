@@ -1,4 +1,4 @@
-# HTTP API và message format — module 1 và module 2 Writing
+# HTTP API và message format — module 1 và module 2 Speaking/Writing
 
 Base path /api, request/response JSON UTF-8. Các thao tác thành công dùng HTTP 200/201/204; lỗi 400/401/403/404/409/503/500. ID tài nguyên lấy từ response, không tin vai trò hoặc ID người dùng tự khai trong body.
 
@@ -90,7 +90,7 @@ Không trả SQL, password hoặc stacktrace về client. Backend log phục v�
 
 ## Học liệu và bài giao — V2
 
-Mutation cần giảng viên và CSRF. Nhánh này đăng ký handler WRITING; các kỹ năng chưa có handler trả SKILL_NOT_SUPPORTED.
+Mutation cần giảng viên và CSRF. Bản tích hợp đăng ký handler SPEAKING và WRITING; các kỹ năng chưa có handler trả SKILL_NOT_SUPPORTED.
 
 | Method / path | Request | Response / quyền |
 |---|---|---|
@@ -100,11 +100,11 @@ Mutation cần giảng viên và CSRF. Nhánh này đăng ký handler WRITING; c
 | GET /resources/{id}/versions | — | Version[] mới đến cũ; chỉ chủ sở hữu |
 | POST /resources/{id}/versions/{versionId}/publish | — | 200 Version sau kiểm tra điều kiện xuất bản |
 | POST /assets/images | multipart file | 201 Asset; PNG/JPEG tối đa 5 MiB, tối đa 12 triệu pixel |
-| POST /assets | multipart file | 201 Asset audio; endpoint chung, Writing không dùng trong giao diện |
+| POST /assets | multipart file | 201 Asset audio; upload audio cho Speaking |
 | GET /assets/{id} | tùy chọn Range | 200/206 byte tệp; chủ tệp hoặc người nhận bài đang có quyền |
 | GET /assignments | — | Assignment[] của chủ lớp hoặc người nhận đang thuộc lớp |
 | POST /assignments | Assign | 201 tạo mới; 200 phát lại requestId cùng nội dung |
-| GET /assignments/{id} | — | AssignedDetail đúng phiên bản; teaching chỉ cho giảng viên, questions=[] cho Writing |
+| GET /assignments/{id} | — | AssignedDetail đúng phiên bản; teaching chỉ cho giảng viên, questions=[] cho Speaking/Writing |
 
 Đường dẫn tính từ /api. Asset response: id, originalName, mimeType, sizeBytes, url. MIME kiểm tra từ tệp thực; SVG/tệp hỏng bị từ chối. Không lộ storageKey/đường dẫn trên máy chủ.
 
@@ -133,3 +133,5 @@ Server khóa lớp khi giao; requestId duy nhất theo lớp chống ghi trùng.
 opensAt được thực thi khi học viên tải bài/hình. dueAt/maxAttempts/allowLate/feedbackPolicy là cấu hình cho module 3; chưa có API bài làm/nộp hoặc mở phản hồi. Rời/xóa khỏi lớp chặn quyền hiện tại, giữ assignment_recipients. Bài đã giao giữ resourceVersionId khi xuất bản phiên bản mới.
 
 Lỗi vẫn dùng ApiError; Writing thêm INVALID_WRITING, INVALID_IMAGE, IMAGE_TOO_LARGE (413). Nginx giới hạn multipart 6 MiB, Spring file 5 MiB. Không cấp hình qua URL static public.
+
+Speaking schema: [SPEAKING_MODULE_2.md](../../docs/SPEAKING_MODULE_2.md), [kiểu frontend Speaking](../client/src/features/speaking/types.ts). Content có taskType/part/prompt/instructions/preparationSeconds/speakingSeconds/checklist/phonemes/items/assessmentCriteria; teaching có outlineExamples/teacherNotes chỉ dành cho giảng viên. Item có text/ipa/audioAssetId. GET /resources?skill=SPEAKING dùng cùng quyền và version flow; student GET /assignments trả cả hai kỹ năng được cấp, client chọn preview theo skill.

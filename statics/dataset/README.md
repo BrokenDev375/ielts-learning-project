@@ -7,3 +7,5 @@ Trên feature/writing, DemoWritingInitializer tạo bảy học liệu DRAFT: Ta
 Ban đầu chưa có lớp/bài giao. Giảng viên tạo lớp, duyệt học liệu rồi giao; học viên tham gia qua giao diện. Restart không tạo trùng seed còn marker DEMO_WRITING_V1.
 
 Testcontainers dùng database/container riêng và fixture riêng. Browser tests tạo lớp/học viên thử trong database demo mà chúng đang chạy; không dùng E2E trên dữ liệu sử dụng thực tế.
+
+Bản tích hợp còn có ba Speaking DRAFT (bài chính, phát triển câu trả lời, phát âm /θ/) và bốn WAV tổng hợp Microsoft Zira Desktop. Seed kiểm tra marker riêng theo kỹ năng, tổng 10 bài; không tự xuất bản. Nguồn/cách duyệt ở docs/SPEAKING_MODULE_2.md.

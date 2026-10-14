@@ -1,8 +1,8 @@
 # IELTS Study — hệ thống lớp học và ôn luyện IELTS
 
-Dự án bài tập lớn **Lập trình mạng**, phát triển riêng trong thư mục này. Nhánh **feature/writing**, tạo trực tiếp từ main, có **module 1: tài khoản/lớp học** và **module 2: soạn, xuất bản, giao học liệu Writing**. Phần làm/nộp bài, AI, hồ sơ trình độ và gamification là bước tiếp theo.
+Dự án bài tập lớn **Lập trình mạng**, phát triển riêng trong thư mục này. Bản tích hợp có **module 1: tài khoản/lớp học** và **module 2: soạn, xuất bản, giao học liệu Speaking và Writing**. Phần làm/nộp bài, AI, hồ sơ trình độ và gamification là bước tiếp theo.
 
-Bản ORM mới khởi tạo ngày 13/10/2026: Spring Data JPA/Hibernate, Hibernate ddl-auto=validate, open-in-view=false. Docker project ielts-learning-orm và database/volume riêng. Module 1 ở main; Speaking và Writing phát triển riêng trên feature/speaking và feature/writing, chưa hợp nhất giao diện. Thay đổi stack tiếp theo phải thống nhất với người phụ trách trước khi triển khai.
+Bản ORM mới khởi tạo ngày 13/10/2026: Spring Data JPA/Hibernate, Hibernate ddl-auto=validate, open-in-view=false. Docker project ielts-learning-orm và database/volume riêng. Writing đã merge vào main; feature/speaking đã tích hợp main để phục vụ đồng thời hai kỹ năng. Thay đổi stack tiếp theo phải thống nhất với người phụ trách trước khi triển khai.
 
 ## Chức năng hiện có
 
@@ -15,6 +15,14 @@ Bản ORM mới khởi tạo ngày 13/10/2026: Spring Data JPA/Hibernate, Hibern
 - Yêu cầu tạo lớp cùng requestId/nội dung được trả lại lớp cũ; tham gia/xóa/rời lớp không ghi trùng.
 - MySQL lưu tài khoản/lớp/thành viên qua những lần chạy; Flyway quản lý schema.
 - Giao diện responsive cho giảng viên/học viên, thông báo lỗi và giữ nội dung biểu mẫu khi yêu cầu chưa thành công.
+
+## Speaking hiện có
+
+- Soạn bài nói chính, phát triển câu trả lời và phát âm theo âm; xem trước, xuất bản, giữ lịch sử và giao bài.
+- Upload/phát audio WAV, MP3, OGG có phân quyền; ba bản nháp mẫu và bốn WAV tổng hợp cho demo.
+- [Payload, seed và nguồn Speaking](docs/SPEAKING_MODULE_2.md).
+
+Giảng viên có hai mục Bài Speaking/Bài Writing. Học viên xem chung tại Bài được giao, lọc theo kỹ năng; preview dùng đúng schema và loại bỏ tham khảo riêng.
 
 ## Writing hiện có
 
@@ -156,7 +164,7 @@ E2E cần bản ứng dụng đang chạy tại http://127.0.0.1:5173, có tài 
 
 Bộ test API kiểm tra đăng nhập/đăng ký, BCrypt, CSRF, giả vai trò, truy cập lớp của người khác, nhiều lớp, chỉnh sửa/xóa/rời lớp, request trùng và 4 request đồng thời. Browser test dùng hai browser context độc lập cho giảng viên/học viên.
 
-Nhánh Writing có 23 API test (12 module 1 + 11 Writing) và 7 browser test (3 module 1 + 4 Writing). [Kết quả Writing](statics/results/module-2-writing-validation.md); kết quả module 1 giữ riêng. Test chức năng chưa thay cho benchmark hiệu năng hoặc đánh giá hiệu quả học tập.
+Bản tích hợp có 31 API test (12 module 1 + 8 Speaking + 11 Writing) và 11 browser test, gồm kiểm tra một lớp nhận cả hai kỹ năng. [Kiểm tra hợp nhất](statics/results/speaking-writing-merge-validation.md). [Kết quả Writing](statics/results/module-2-writing-validation.md); kết quả module 1 giữ riêng. Test chức năng chưa thay cho benchmark hiệu năng hoặc đánh giá hiệu quả học tập.
 
 ## Cấu trúc source
 
@@ -184,7 +192,7 @@ Cấu trúc package và trách nhiệm từng tầng: [BACKEND_STRUCTURE.md](doc
 
 ## Giới hạn và phần phát triển tiếp
 
-- Hiện có tài khoản/lớp, học liệu/giao bài Writing và các bước bổ trợ được soạn sẵn; chưa có nhập/lưu nháp/nộp bài của học viên, AI, profile IELTS, đề xuất bổ trợ tự động hoặc XP.
+- Hiện có tài khoản/lớp, học liệu/giao bài Speaking/Writing và các bước bổ trợ được soạn sẵn; chưa có nhập/lưu nháp/nộp bài của học viên, AI, profile IELTS, đề xuất bổ trợ tự động hoặc XP.
 - Session ở RAM của một backend; chưa có nhiều backend, quên mật khẩu, xác minh email hoặc hệ thống cấp tài khoản giảng viên thực tế.
 - Danh sách hiện phù hợp prototype nhỏ, chưa có phân trang/rate limiting hoặc benchmark tải.
 - Các cơ chế quyền, idempotency và Docker là phần nền tảng kỹ thuật. Không tự gọi chúng là novelty đã được chứng minh.

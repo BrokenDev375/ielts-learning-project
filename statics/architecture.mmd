@@ -2,5 +2,5 @@ flowchart LR
     T["Client giảng viên<br/>React"] -->|"HTTP/JSON + session cookie"| P["Nginx / Vite proxy"]
     S["Client học viên<br/>React"] -->|"HTTP/JSON + session cookie"| P
     P --> A["Spring Boot API<br/>Auth, quyền, lớp học"]
-    A -->|"JPA / Hibernate / Hikari / transaction"| DB[("MySQL 8.4<br/>users, classrooms, class_members")]
+    A -->|"JPA / Hibernate / Hikari / transaction"| DB[("MySQL 8.4<br/>accounts, classrooms, resources,<br/>versions, assignments, assets")]
     DB --- V["Named volume<br/>lưu dữ liệu"]

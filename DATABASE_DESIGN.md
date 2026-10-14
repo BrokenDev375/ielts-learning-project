@@ -2,7 +2,7 @@
 
 Ngày thiết kế: **12/10/2026**. Database: **MySQL 8.4 / InnoDB / UTF-8**. Thiết kế bám [plan](PLAN_IELTS_LEARNING_SYSTEM.md), giữ schema tài khoản/lớp đã có và dữ liệu/API Reading–Listening tại mục 6.4.
 
-Thiết kế tổng thể có **44 bảng**, chia theo giai đoạn. Nhánh Writing đã triển khai 3 bảng V1 và 13 bảng V2 qua Flyway; các nhóm V3–V6 là thiết kế để triển khai tiếp. SQL tham chiếu được đặt trong docs/database để phục vụ review/kiểm tra.
+Thiết kế tổng thể có **44 bảng**, chia theo giai đoạn. Bản tích hợp đã triển khai 3 bảng V1 và 13 bảng V2 qua Flyway; các nhóm V3–V6 là thiết kế để triển khai tiếp. SQL tham chiếu được đặt trong docs/database để phục vụ review/kiểm tra.
 
 ## Tài liệu sử dụng khi chia việc
 
@@ -28,7 +28,7 @@ V1 và V2 đã là migration thực tế. V3–V6 là cách nhóm phần thiết
 | V5 | 9 | đợt test, điểm kỹ năng, profile chung/lịch sử, nhu cầu và gợi ý bổ trợ |
 | V6 | 6 | cấu hình XP, thưởng, ngày học, huy hiệu đã trao/định nghĩa, thực nghiệm |
 
-V2 phục vụ Writing authoring/assignment; bảng câu hỏi/nghe đã tạo nhưng chưa có handler theo kỹ năng trên nhánh này. Triển khai V3 để lưu nháp/nộp bài và nối Reading/Listening. Các cột/FK nối rubric, outline và profile được ghi rõ thời điểm bổ sung. V1/V2 đã áp dụng giữ nguyên; bước tiếp theo tạo migration mới.
+V2 phục vụ Speaking/Writing authoring/assignment; bảng câu hỏi/nghe đã tạo nhưng chưa có handler theo kỹ năng trên nhánh này. Triển khai V3 để lưu nháp/nộp bài và nối Reading/Listening. Các cột/FK nối rubric, outline và profile được ghi rõ thời điểm bổ sung. V1/V2 đã áp dụng giữ nguyên; bước tiếp theo tạo migration mới.
 
 ## 2. Những quyết định chính
 

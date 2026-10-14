@@ -1,6 +1,6 @@
 # Writing — module 2: học liệu và giao bài
 
-Nhánh feature/writing được tạo trực tiếp từ main (module 1). Nhánh feature/speaking được giữ riêng; Writing dùng cùng migration V2 và hợp đồng Resource/Assignment, chưa hợp nhất hai giao diện.
+Writing được merge vào main qua PR #1. Nhánh feature/speaking hiện đã tích hợp main; hai kỹ năng dùng chung migration V2 và hợp đồng Resource/Assignment. Giảng viên có hai ngân hàng, học viên xem chung Bài được giao và lọc theo kỹ năng.
 
 ## Phạm vi hiện có
 
@@ -91,4 +91,4 @@ API test dùng MySQL Testcontainers riêng. Browser test tạo dữ liệu trong
 
 Script dùng E2E_BASE_URL và các biến E2E_* giống bộ browser test; snapshot tạm nằm ở .test-state, không commit. Kiểm tra đủ bảy seed, phiên bản, bài giao/người nhận, nội dung học viên, checksum hình.
 
-Khi hợp nhất với Speaking: giữ V2 nguyên checksum; hòa giải App.tsx, kiểu shared và tài liệu, đăng ký cả hai ContentHandler. imageAssets mặc định rỗng để handler không dùng hình tiếp tục hoạt động. Module 3 nhận AssignedDetail cố định resourceVersionId và lưu câu trả lời theo activity.id; module đánh giá phải kiểm tra thời điểm/policy trước cấp gợi ý riêng.
+Bản hợp nhất giữ V2 nguyên checksum, đăng ký cả hai ContentHandler và dùng kiểu generic shared với DTO riêng của từng kỹ năng. imageAssets mặc định rỗng để handler không dùng hình tiếp tục hoạt động. Module 3 nhận AssignedDetail cố định resourceVersionId và lưu câu trả lời theo activity.id; module đánh giá phải kiểm tra thời điểm/policy trước cấp gợi ý riêng.

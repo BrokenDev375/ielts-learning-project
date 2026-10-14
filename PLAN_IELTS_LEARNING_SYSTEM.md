@@ -1,6 +1,6 @@
 # Kế hoạch kiến trúc và các module: hệ thống hỗ trợ ôn luyện IELTS bằng AI
 
-Ngày lập: **08/10/2026**. Trạng thái: **module 1 Tài khoản/lớp học (M01/M02) đã có; feature/writing có phần module 2 Soạn/xuất bản/giao học liệu Writing (M03); làm/nộp bài và đánh giá vẫn là kế hoạch**.
+Ngày lập: **08/10/2026**. Trạng thái: **module 1 Tài khoản/lớp học (M01/M02) đã có; bản tích hợp có phần module 2 Soạn/xuất bản/giao học liệu Speaking và Writing (M03); làm/nộp bài và đánh giá vẫn là kế hoạch**.
 
 Cập nhật **09/10/2026**: profile chung, XP/cấp độ/huy hiệu/chuỗi ngày và Reading đã được bổ sung ở lần trước. Lần này cập nhật Listening: bốn nhãn mục tiêu, kiểm tra khó khăn sau test, nhóm luyện nghe–chép lời, hai loại video YouTube, transcript riêng và tiến trình theo từng đoạn; thêm bảng nguồn học liệu cho Reading/Listening và cách chuẩn bị seed.
 
@@ -1728,3 +1728,5 @@ Danh sách nguồn cập nhật **11/10/2026**; bảng M09.7 ghi hoạt động,
 Không tải/nhập PDF, gọi API, tạo seed hoặc đo độ chính xác AI trong lần cập nhật này. Dữ liệu số/câu tự biên soạn ở M09.6 chỉ là ví dụ thiết kế; bài mẫu công khai là nguồn tham khảo. Học liệu phát cho học sinh và dữ liệu đối chiếu chuyên môn cần kiểm tra/duyệt phù hợp trước khi sử dụng.
 
 Cập nhật cấu trúc backend 13/10/2026: service/repository tự viết tách interface và implementation trong các package impl trên main, feature/speaking và feature/writing. Controller/bootstrap inject interface, @Transactional giữ trên implementation; Spring Data tự tạo implementation cho các *JpaRepository. Schema/API/stack giữ nguyên. Chi tiết ở docs/BACKEND_STRUCTURE.md.
+
+Cập nhật hợp nhất 13/10/2026: Writing đã vào main, feature/speaking đã merge main và ghép nền chung. Cả hai handler hoạt động trên V2 nguyên checksum, các DTO kỹ năng frontend tách riêng trên kiểu generic chung. Giảng viên có hai ngân hàng, học viên xem chung bài được giao và lọc Speaking/Writing. Tổng seed 10 (3 Speaking + 7 Writing), vẫn là học liệu demo cần duyệt; các chức năng làm/nộp/chấm AI chưa triển khai.

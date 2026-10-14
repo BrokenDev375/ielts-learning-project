@@ -14,6 +14,14 @@ Một transaction Hibernate đã lỗi constraint cần rollback; không bắt l
 
 Docker project: ielts-learning-orm, database ielts_learning_orm, volume riêng. Frontend 5173, API host 8080, cổng MySQL IDE 3306; bên trong Docker server dùng 8080. Bản cũ ở ielts-learning-project là nguồn tham khảo, không nằm trong lịch sử Git mới.
 
+Module 2 có ResourceEntity, ResourceVersionEntity, AssetEntity, LearningLabelEntity, AssignmentEntity và ba entity liên kết: ResourceAssetEntity, ResourceLabelEntity, AssignmentRecipientEntity. Nội dung/teaching/source ánh xạ JsonNode vào cột MySQL JSON bằng Hibernate; teaching chỉ đưa vào DTO giảng viên. Các entity liên kết dùng EmbeddedId/MapsId.
+
+LearningRepository là facade trên 8 JpaRepository mới, trả DTO cho service/API. LearningService khóa ResourceEntity khi sửa/xuất bản; Assignment khóa ClassroomEntity để chụp thành viên và kiểm tra UUID/fingerprint. Giao bài dùng READ_COMMITTED để yêu cầu đồng thời đọc được kết quả sau khi nhận khóa. Khóa lớp cũng được dùng trong thay đổi membership của module 1.
+
+Phiên bản PUBLISHED không sửa trực tiếp; lần sửa tạo phiên bản DRAFT kế tiếp. Assignment giữ khóa phiên bản nên đề đã giao không bị đổi. File audio ở volume riêng, metadata/quyền qua JPA; rollback giao dịch xóa file vừa tạo. Seed khóa UserEntity, kiểm tra marker của từng loại và không tạo lại bài/audio qua restart.
+
+Migration V2 tạo 13 bảng, trong đó 5 bảng câu hỏi/lựa chọn/nguồn nghe/đoạn/transcript dành cho các kỹ năng tiếp theo chưa có entity hoặc endpoint nội dung. Flyway là nơi định nghĩa schema; không dùng Hibernate create/update hoặc nhập schema tham chiếu vào database ứng dụng.
+
 Nguồn kỹ thuật:
 
 - [Spring Boot 3.5 — SQL/JPA](https://docs.spring.io/spring-boot/3.5/reference/data/sql.html).
